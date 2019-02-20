@@ -1,0 +1,64 @@
+language: rust
+dist: xenial
+
+os:
+  - linux
+  - osx
+  - windows
+
+rust:
+  - stable
+  - beta
+  - nightly
+
+matrix:
+  allow_failures:
+    - rust: nightly
+
+addons:
+  apt:
+    packages:
+      # Dependencies needed to build kcov.
+      # TODO Remove when kcov >= 34 is available in the official repositories.
+      - libelf-dev
+      - libdw-dev
+      - binutils-dev
+      - libiberty-dev
+
+      # Dependencies of the check tool.
+      - valgrind
+
+      # Dependencies of the code coverage tool.
+      - jq
+
+install:
+  # Install miri.
+  - rustup toolchain install nightly
+  - rustup component add --toolchain nightly rust-src
+  - cargo +nightly install --force --git https://github.com/rust-lang/miri miri
+  - cargo install xargo
+
+  - rustup component add rustfmt
+
+  # `cargo-deadlinks` does not work on windows.
+  - test "$TRAVIS_OS_NAME" = windows || cargo install cargo-deadlinks
+
+script:
+  - ./tools/check.sh
+
+# TODO Do not build kcov when version >= 34 is available in the official repositories.
+after_success:
+  test "$TRAVIS_OS_NAME" = linux
+  && test "$TRAVIS_RUST_VERSION" = stable
+  && wget https://github.com/SimonKagstrom/kcov/archive/v36.tar.gz
+  && tar xf v36.tar.gz
+  && cd kcov-36
+  && mkdir build
+  && cd build
+  && cmake ..
+  && make
+  && sudo make install
+  && cd ../../
+  && rm -rf kcov-36 v36.tar.gz
+  && travis_wait ./tools/codecov.sh
+  && bash <(curl -s https://codecov.io/bash)

@@ -1,0 +1,45 @@
+[package]
+name = "archery"
+description = "Abstract over the atomicity of reference-counting pointers"
+version = "0.0.0"
+authors = ["Diogo Sousa <diogogsousa@gmail.com>"]
+
+edition = "2018"
+
+homepage = "https://github.com/orium/archery"
+repository = "https://github.com/orium/archery"
+documentation = "https://docs.rs/archery"
+readme = "README.md"
+
+keywords = [
+    "rc",
+    "arc",
+    "reference-counting",
+]
+
+categories = [
+    "concurrency",
+    "memory-management",
+    "rust-patterns",
+]
+
+license = "MPL-2.0"
+
+# What to include when packaging.
+include = [
+    "/src/**/*.rs",
+    "/Cargo.toml",
+    "/LICENSE.md",
+    "/README.md",
+    "/release-notes.md",
+]
+
+[badges]
+travis-ci = { repository = "orium/archery", branch = "master" }
+codecov = { repository = "orium/archery", branch = "master", service = "github" }
+
+[dev-dependencies]
+pretty_assertions = "0.5"
+
+[features]
+fatal-warnings = []

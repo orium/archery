@@ -39,7 +39,7 @@ travis-ci = { repository = "orium/archery", branch = "master" }
 codecov = { repository = "orium/archery", branch = "master", service = "github" }
 
 [dev-dependencies]
-pretty_assertions = "0.5"
+pretty_assertions = "0.6"
 
 [features]
 fatal-warnings = []

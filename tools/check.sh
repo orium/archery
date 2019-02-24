@@ -24,8 +24,6 @@ function on_failure {
 test "$(os)" = windows || assert_installed "cargo-deadlinks"
 assert_installed "cargo-fmt"
 assert_installed "cargo-miri"
-# `valgrind` is just for Linux.
-test "$(os)" != linux || assert_installed "valgrind"
 
 trap on_failure ERR
 
@@ -33,19 +31,8 @@ cargo build --features fatal-warnings --all-targets
 cargo test  --features fatal-warnings
 cargo doc   --features fatal-warnings
 
-# Tests for memory safety with miri.
+# Tests for memory safety and memory leaks with miri.
 cargo +nightly miri test
-
-# Tests for memory safety and memory leaks with valgrind.
-if [ "$(os)" == linux ]; then
-    build=$(unit_tests_build)
-
-    valgrind \
-        --leak-check=full \
-        --errors-for-leak-kinds=definite,indirect \
-        --error-exitcode=1 \
-        target/debug/$build
-fi
 
 # `cargo-deadlinks` does not work on windows.
 test "$TRAVIS_OS_NAME" = windows || cargo deadlinks

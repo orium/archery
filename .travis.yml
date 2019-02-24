@@ -25,9 +25,6 @@ addons:
       - binutils-dev
       - libiberty-dev
 
-      # Dependencies of the check tool.
-      - valgrind
-
       # Dependencies of the code coverage tool.
       - jq
 

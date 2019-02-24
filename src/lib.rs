@@ -15,15 +15,15 @@
 // Note: If you change this remember to update `README.md`.  To do so run `./tools/update-readme.sh`.
 //! # Archery
 //!
-//! WIP! README
+//! WIP! - Work in progress.  There will be stuff here soon :)
 
-pub fn test() -> u32 {
-    println!("hello");
-    println!("from");
-    println!("archery");
+pub mod shared_pointer;
 
-    42
-}
+pub use shared_pointer::SharedPointer;
 
-#[cfg(test)]
-mod test;
+pub use shared_pointer::kind::SharedPointerKind;
+
+#[doc(no_inline)]
+pub use shared_pointer::kind::SharedPointerKindArc;
+#[doc(no_inline)]
+pub use shared_pointer::kind::SharedPointerKindRc;

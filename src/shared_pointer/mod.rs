@@ -59,19 +59,6 @@ where
     }
 }
 
-impl<T, P> Clone for SharedPointer<T, P>
-where
-    P: SharedPointerKind,
-{
-    #[inline(always)]
-    fn clone(&self) -> SharedPointer<T, P> {
-        SharedPointer {
-            ptr: unsafe { self.ptr.clone::<T>() },
-            _phantom_t: PhantomData,
-        }
-    }
-}
-
 impl<T, P> Borrow<T> for SharedPointer<T, P>
 where
     P: SharedPointerKind,
@@ -89,6 +76,19 @@ where
     #[inline(always)]
     fn as_ref(&self) -> &T {
         self.deref()
+    }
+}
+
+impl<T, P> Clone for SharedPointer<T, P>
+where
+    P: SharedPointerKind,
+{
+    #[inline(always)]
+    fn clone(&self) -> SharedPointer<T, P> {
+        SharedPointer {
+            ptr: unsafe { self.ptr.clone::<T>() },
+            _phantom_t: PhantomData,
+        }
     }
 }
 

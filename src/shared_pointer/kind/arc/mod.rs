@@ -28,6 +28,20 @@ pub struct SharedPointerKindArc {
 
 impl SharedPointerKindArc {
     #[inline(always)]
+    fn new_from_inner<T>(arc: Arc<T>) -> SharedPointerKindArc {
+        SharedPointerKindArc {
+            inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }),
+        }
+    }
+
+    #[inline(always)]
+    unsafe fn take_inner<T>(self) -> Arc<T> {
+        let arc: UntypedArc = ManuallyDrop::into_inner(self.inner);
+
+        mem::transmute(arc)
+    }
+
+    #[inline(always)]
     unsafe fn as_inner_ref<T>(&self) -> &Arc<T> {
         let arc_t: *const Arc<T> = self.inner.deref() as *const UntypedArc as *const Arc<T>;
 
@@ -50,11 +64,38 @@ impl SharedPointerKindArc {
 impl SharedPointerKind for SharedPointerKindArc {
     #[inline(always)]
     fn new<T>(v: T) -> SharedPointerKindArc {
-        let arc: Arc<T> = Arc::new(v);
+        SharedPointerKindArc::new_from_inner(Arc::new(v))
+    }
 
-        SharedPointerKindArc {
-            inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }),
-        }
+    #[inline(always)]
+    fn from_box<T>(v: Box<T>) -> SharedPointerKindArc {
+        SharedPointerKindArc::new_from_inner::<T>(Arc::from(v))
+    }
+
+    #[inline(always)]
+    unsafe fn deref<T>(&self) -> &T {
+        self.as_inner_ref::<T>().as_ref()
+    }
+
+    #[inline(always)]
+    unsafe fn try_unwrap<T>(self) -> Result<T, SharedPointerKindArc> {
+        Arc::try_unwrap(self.take_inner())
+            .map_err(|inner| SharedPointerKindArc::new_from_inner(inner))
+    }
+
+    #[inline(always)]
+    unsafe fn get_mut<T>(&mut self) -> Option<&mut T> {
+        Arc::get_mut(self.as_inner_mut())
+    }
+
+    #[inline(always)]
+    unsafe fn make_mut<T: Clone>(&mut self) -> &mut T {
+        Arc::make_mut(self.as_inner_mut())
+    }
+
+    #[inline(always)]
+    unsafe fn strong_count<T>(&self) -> usize {
+        Arc::strong_count(self.as_inner_ref::<T>())
     }
 
     #[inline(always)]
@@ -62,19 +103,6 @@ impl SharedPointerKind for SharedPointerKindArc {
         SharedPointerKindArc {
             inner: ManuallyDrop::new(Arc::clone(self.as_inner_ref())),
         }
-    }
-
-    #[inline(always)]
-    unsafe fn make_mut<T>(&mut self) -> &mut T
-    where
-        T: Clone,
-    {
-        Arc::make_mut(self.as_inner_mut())
-    }
-
-    #[inline(always)]
-    unsafe fn deref<T>(&self) -> &T {
-        self.as_inner_ref::<T>().as_ref()
     }
 
     #[inline(always)]

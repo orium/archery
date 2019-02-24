@@ -38,51 +38,116 @@ fn test_deref() {
 }
 
 #[test]
-fn test_clone() {
-    let ptr_42: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(Cell::new(42));
-    let ptr_42_clone = SharedPointer::clone(&ptr_42);
+fn test_try_unwrap() {
+    let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
 
-    assert_eq!(ptr_42.get(), 42);
-    assert_eq!(ptr_42_clone.get(), 42);
+    assert_eq!(SharedPointer::try_unwrap(ptr).unwrap(), 42);
 
-    ptr_42_clone.set(3);
+    let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+    let ptr_clone = SharedPointer::clone(&ptr);
 
-    assert_eq!(ptr_42.get(), 3);
-    assert_eq!(ptr_42_clone.get(), 3);
+    let ptr_clone = SharedPointer::try_unwrap(ptr_clone).unwrap_err();
+    let ptr = SharedPointer::try_unwrap(ptr).unwrap_err();
 
-    mem::drop(ptr_42);
+    assert_eq!(*ptr, 42);
+    assert_eq!(*ptr_clone, 42);
+}
 
-    assert_eq!(ptr_42_clone.get(), 3);
+#[test]
+fn test_get_mut() {
+    let mut ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+
+    assert_eq!(*ptr, 42);
+
+    *SharedPointer::get_mut(&mut ptr).unwrap() += 1;
+
+    assert_eq!(*ptr, 43);
+
+    let mut ptr_clone = SharedPointer::clone(&ptr);
+
+    assert_eq!(SharedPointer::get_mut(&mut ptr), None);
+    assert_eq!(SharedPointer::get_mut(&mut ptr_clone), None);
+
+    mem::drop(ptr);
+
+    *SharedPointer::get_mut(&mut ptr_clone).unwrap() += 1;
+
+    assert_eq!(*ptr_clone, 44);
+}
+
+#[test]
+fn test_strong_count() {
+    let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+
+    assert_eq!(SharedPointer::strong_count(&ptr), 1);
+
+    let ptr_clone = SharedPointer::clone(&ptr);
+
+    assert_eq!(SharedPointer::strong_count(&ptr), 2);
+    assert_eq!(SharedPointer::strong_count(&ptr_clone), 2);
+
+    mem::drop(ptr);
+
+    assert_eq!(SharedPointer::strong_count(&ptr_clone), 1);
+}
+
+#[test]
+fn test_ptr_eq() {
+    let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+    let ptr_same_content: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+    let ptr_clone: SharedPointer<_, _> = SharedPointer::clone(&ptr);
+
+    assert!(SharedPointer::ptr_eq(&ptr, &ptr));
+    assert!(!SharedPointer::ptr_eq(&ptr, &ptr_same_content));
+    assert!(SharedPointer::ptr_eq(&ptr, &ptr_clone));
 }
 
 #[test]
 fn test_make_mut() {
-    let mut ptr_42: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+    let mut ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
 
-    assert_eq!(*ptr_42, 42);
+    assert_eq!(*ptr, 42);
 
-    *SharedPointer::make_mut(&mut ptr_42) += 1;
+    *SharedPointer::make_mut(&mut ptr) += 1;
 
-    assert_eq!(*ptr_42, 43);
+    assert_eq!(*ptr, 43);
 
     // Clone to force make_mut to clone the data.
-    let mut ptr_42_clone = SharedPointer::clone(&ptr_42);
+    let mut ptr_clone = SharedPointer::clone(&ptr);
 
-    assert_eq!(*ptr_42_clone, 43);
+    assert_eq!(*ptr_clone, 43);
 
-    *SharedPointer::make_mut(&mut ptr_42_clone) += 1;
+    *SharedPointer::make_mut(&mut ptr_clone) += 1;
 
-    assert_eq!(*ptr_42, 43);
-    assert_eq!(*ptr_42_clone, 44);
+    assert_eq!(*ptr, 43);
+    assert_eq!(*ptr_clone, 44);
 
-    *SharedPointer::make_mut(&mut ptr_42) *= 2;
+    *SharedPointer::make_mut(&mut ptr) *= 2;
 
-    assert_eq!(*ptr_42, 2 * 43);
-    assert_eq!(*ptr_42_clone, 44);
+    assert_eq!(*ptr, 2 * 43);
+    assert_eq!(*ptr_clone, 44);
 
-    mem::drop(ptr_42);
+    mem::drop(ptr);
 
-    assert_eq!(*ptr_42_clone, 44);
+    assert_eq!(*ptr_clone, 44);
+}
+
+#[test]
+fn test_clone() {
+    let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(Cell::new(42));
+    let ptr_clone = SharedPointer::clone(&ptr);
+
+    assert_eq!(ptr.get(), 42);
+    assert_eq!(ptr_clone.get(), 42);
+
+    ptr_clone.set(3);
+
+    assert_eq!(ptr.get(), 3);
+    assert_eq!(ptr_clone.get(), 3);
+
+    mem::drop(ptr);
+
+    assert_eq!(ptr_clone.get(), 3);
 }
 
 fn hash<T: Hash>(pointer: &SharedPointer<T, SharedPointerKindRc>) -> u64 {
@@ -188,10 +253,42 @@ fn test_ord() {
 }
 
 #[test]
+fn test_default() {
+    let ptr: SharedPointer<i32, SharedPointerKindRc> = Default::default();
+
+    assert_eq!(*ptr, 0);
+}
+
+#[test]
+fn test_from_box_t() {
+    let ptr: SharedPointer<i32, SharedPointerKindRc> = SharedPointer::from(Box::new(42));
+
+    assert_eq!(*ptr, 42);
+}
+
+#[test]
+fn test_from_t() {
+    let ptr: SharedPointer<i32, SharedPointerKindRc> = SharedPointer::from(42);
+
+    assert_eq!(*ptr, 42);
+}
+
+#[test]
 fn test_debug() {
     let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new([1, 2, 3]);
 
     assert_eq!(format!("{:?}", ptr), "[1, 2, 3]");
+}
+
+#[cfg(not(miri))] // Miri doesn't like this one.
+#[test]
+fn test_fmt_pointer() {
+    let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(314);
+
+    assert_eq!(
+        format!("{:p}", ptr),
+        format!("{:p}", ptr.deref() as *const i32)
+    );
 }
 
 #[test]

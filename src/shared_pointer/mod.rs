@@ -13,7 +13,10 @@ use std::fmt::Formatter;
 use std::hash::Hash;
 use std::hash::Hasher;
 use std::marker::PhantomData;
+use std::mem;
+use std::mem::ManuallyDrop;
 use std::ops::Deref;
+use std::ptr;
 
 /// Pointer to shared data with reference-counting.
 ///
@@ -76,7 +79,7 @@ pub struct SharedPointer<T, P>
 where
     P: SharedPointerKind,
 {
-    ptr: P,
+    ptr: ManuallyDrop<P>,
     _phantom_t: PhantomData<T>,
 }
 
@@ -85,22 +88,67 @@ where
     P: SharedPointerKind,
 {
     #[inline(always)]
-    pub fn new(v: T) -> SharedPointer<T, P> {
+    fn new_from_inner(ptr: P) -> SharedPointer<T, P> {
         SharedPointer {
-            ptr: P::new::<T>(v),
+            ptr: ManuallyDrop::new(ptr),
             _phantom_t: PhantomData,
         }
+    }
+
+    #[inline(always)]
+    pub fn new(v: T) -> SharedPointer<T, P> {
+        SharedPointer::new_from_inner(P::new::<T>(v))
+    }
+
+    #[inline(always)]
+    pub fn try_unwrap(this: SharedPointer<T, P>) -> Result<T, SharedPointer<T, P>> {
+        // TODO Use ManuallyDrop::take() once it gets stable.
+        //      See https://github.com/rust-lang/rust/issues/55422.
+        let ptr: P = ManuallyDrop::into_inner(unsafe { ptr::read(&this.ptr) });
+
+        mem::forget(this);
+
+        unsafe { ptr.try_unwrap::<T>() }.map_err(|ptr| SharedPointer::new_from_inner(ptr))
+    }
+
+    #[inline(always)]
+    pub fn get_mut(this: &mut SharedPointer<T, P>) -> Option<&mut T> {
+        unsafe { this.ptr.get_mut::<T>() }
+    }
+
+    #[inline(always)]
+    pub fn strong_count(this: &Self) -> usize {
+        unsafe { this.ptr.strong_count::<T>() }
+    }
+
+    #[inline(always)]
+    pub fn ptr_eq<PO: SharedPointerKind>(
+        this: &SharedPointer<T, P>,
+        other: &SharedPointer<T, PO>,
+    ) -> bool {
+        ptr::eq(this.deref(), other.deref())
     }
 }
 
 impl<T, P> SharedPointer<T, P>
 where
-    P: SharedPointerKind,
     T: Clone,
+    P: SharedPointerKind,
 {
     #[inline(always)]
     pub fn make_mut(this: &mut SharedPointer<T, P>) -> &mut T {
         unsafe { this.ptr.make_mut::<T>() }
+    }
+}
+
+impl<T, P> Default for SharedPointer<T, P>
+where
+    T: Default,
+    P: SharedPointerKind,
+{
+    #[inline(always)]
+    fn default() -> SharedPointer<T, P> {
+        SharedPointer::new(Default::default())
     }
 }
 
@@ -112,7 +160,7 @@ where
 
     #[inline(always)]
     fn deref(&self) -> &T {
-        unsafe { self.ptr.deref() }
+        unsafe { self.ptr.deref().deref() }
     }
 }
 
@@ -142,10 +190,7 @@ where
 {
     #[inline(always)]
     fn clone(&self) -> SharedPointer<T, P> {
-        SharedPointer {
-            ptr: unsafe { self.ptr.clone::<T>() },
-            _phantom_t: PhantomData,
-        }
+        SharedPointer::new_from_inner(unsafe { self.ptr.deref().clone::<T>() })
     }
 }
 
@@ -227,6 +272,26 @@ where
     }
 }
 
+impl<T, P> From<T> for SharedPointer<T, P>
+where
+    P: SharedPointerKind,
+{
+    #[inline(always)]
+    fn from(other: T) -> SharedPointer<T, P> {
+        SharedPointer::new(other)
+    }
+}
+
+impl<T, P> From<Box<T>> for SharedPointer<T, P>
+where
+    P: SharedPointerKind,
+{
+    #[inline(always)]
+    fn from(v: Box<T>) -> SharedPointer<T, P> {
+        SharedPointer::new_from_inner(P::from_box(v))
+    }
+}
+
 impl<T, P> Debug for SharedPointer<T, P>
 where
     T: Debug,
@@ -238,7 +303,17 @@ where
     }
 }
 
-impl<T, P: SharedPointerKind> Display for SharedPointer<T, P>
+impl<T, P> fmt::Pointer for SharedPointer<T, P>
+where
+    P: SharedPointerKind,
+{
+    #[inline(always)]
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Pointer::fmt(&(&**self as *const T), f)
+    }
+}
+
+impl<T, P> Display for SharedPointer<T, P>
 where
     T: Display,
     P: SharedPointerKind,

@@ -28,6 +28,20 @@ pub struct SharedPointerKindRc {
 
 impl SharedPointerKindRc {
     #[inline(always)]
+    fn new_from_inner<T>(rc: Rc<T>) -> SharedPointerKindRc {
+        SharedPointerKindRc {
+            inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }),
+        }
+    }
+
+    #[inline(always)]
+    unsafe fn take_inner<T>(self) -> Rc<T> {
+        let rc: UntypedRc = ManuallyDrop::into_inner(self.inner);
+
+        mem::transmute(rc)
+    }
+
+    #[inline(always)]
     unsafe fn as_inner_ref<T>(&self) -> &Rc<T> {
         let rc_t: *const Rc<T> = self.inner.deref() as *const UntypedRc as *const Rc<T>;
 
@@ -50,11 +64,38 @@ impl SharedPointerKindRc {
 impl SharedPointerKind for SharedPointerKindRc {
     #[inline(always)]
     fn new<T>(v: T) -> SharedPointerKindRc {
-        let rc: Rc<T> = Rc::new(v);
+        SharedPointerKindRc::new_from_inner(Rc::new(v))
+    }
 
-        SharedPointerKindRc {
-            inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }),
-        }
+    #[inline(always)]
+    fn from_box<T>(v: Box<T>) -> SharedPointerKindRc {
+        SharedPointerKindRc::new_from_inner::<T>(Rc::from(v))
+    }
+
+    #[inline(always)]
+    unsafe fn deref<T>(&self) -> &T {
+        self.as_inner_ref::<T>().as_ref()
+    }
+
+    #[inline(always)]
+    unsafe fn try_unwrap<T>(self) -> Result<T, SharedPointerKindRc> {
+        Rc::try_unwrap(self.take_inner())
+            .map_err(|inner| SharedPointerKindRc::new_from_inner(inner))
+    }
+
+    #[inline(always)]
+    unsafe fn get_mut<T>(&mut self) -> Option<&mut T> {
+        Rc::get_mut(self.as_inner_mut())
+    }
+
+    #[inline(always)]
+    unsafe fn make_mut<T: Clone>(&mut self) -> &mut T {
+        Rc::make_mut(self.as_inner_mut())
+    }
+
+    #[inline(always)]
+    unsafe fn strong_count<T>(&self) -> usize {
+        Rc::strong_count(self.as_inner_ref::<T>())
     }
 
     #[inline(always)]
@@ -62,19 +103,6 @@ impl SharedPointerKind for SharedPointerKindRc {
         SharedPointerKindRc {
             inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())),
         }
-    }
-
-    #[inline(always)]
-    unsafe fn make_mut<T>(&mut self) -> &mut T
-    where
-        T: Clone,
-    {
-        Rc::make_mut(self.as_inner_mut())
-    }
-
-    #[inline(always)]
-    unsafe fn deref<T>(&self) -> &T {
-        self.as_inner_ref::<T>().as_ref()
     }
 
     #[inline(always)]

@@ -36,7 +36,7 @@
 //!
 //! ## Setup
 //!
-//! To use archery add the following to your `Cargo.toml`:
+//! To use Archery add the following to your `Cargo.toml`:
 //!
 //! ```toml
 //! [dependencies]

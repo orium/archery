@@ -18,7 +18,7 @@ function new_readme {
 
     grep --no-filename '//!' src/lib.rs \
         | sed 's,^//!\( \|\),,' \
-        | grep -v '\[!\[.* documentation\](.*)\](.*/struct\..*\.html)' >> "$filename"
+        | grep -v DROP_LINE_IN_README >> "$filename"
 
     echo "$filename"
 }

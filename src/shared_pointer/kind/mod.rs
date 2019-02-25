@@ -5,6 +5,8 @@
 
 use std::fmt::Debug;
 
+/// Trait for [type constructors](https://en.wikipedia.org/wiki/Type_constructor) of
+/// reference-counting pointers.
 pub trait SharedPointerKind: Debug {
     fn new<T>(v: T) -> Self;
     unsafe fn deref<T>(&self) -> &T;

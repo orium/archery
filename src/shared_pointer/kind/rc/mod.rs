@@ -17,8 +17,12 @@ use std::rc::Rc;
 
 type UntypedRc = Rc<()>;
 
+/// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
+/// [`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) pointers.
 pub struct SharedPointerKindRc {
-    // WIP! Explain that we use ManuallyDrop so we can drop it as `Rc<T>`
+    /// We use `ManuallyDrop` here, so that we can drop it explicitly as `Rc<T>`.  Not sure if it
+    /// can be dropped as `UntypedRc`, but it seems to be playing with fire (even more than we
+    /// already are).
     inner: ManuallyDrop<UntypedRc>,
 }
 

@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#![allow(clippy::eq_op)]
+
 use super::*;
 use kind::SharedPointerKindArc;
 use kind::SharedPointerKindRc;
@@ -64,7 +66,7 @@ fn test_make_mut() {
     assert_eq!(*ptr_42, 43);
 
     // Clone to force make_mut to clone the data.
-    let mut ptr_42_clone = SharedPointer::clone(&mut ptr_42);
+    let mut ptr_42_clone = SharedPointer::clone(&ptr_42);
 
     assert_eq!(*ptr_42_clone, 43);
 
@@ -120,6 +122,7 @@ fn test_eq() {
     assert!(!(ptr_22 != ptr_22));
 }
 
+#[allow(clippy::cyclomatic_complexity)]
 #[test]
 fn test_ord() {
     let ptr_22: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(22);

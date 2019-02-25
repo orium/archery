@@ -37,7 +37,7 @@ archery = "<version>"
 ## Using Archery
 
 Archery defines a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html)
-that receives the [kind of pointer](https://docs.rs/archery/latest/archery/shared_pointer/kind/struct.SharedPointerKind.html)
+that receives the [kind of pointer](https://docs.rs/archery/latest/archery/shared_pointer/kind/trait.SharedPointerKind.html)
 as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
 type away.
 

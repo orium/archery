@@ -18,6 +18,7 @@ function new_readme {
 
     grep --no-filename '//!' src/lib.rs \
         | sed 's,^//!\( \|\),,' \
+        | sed 's,\](\./\([^)]*\.html\)),](https://docs.rs/archery/latest/archery/\1),' \
         | grep -v DROP_LINE_IN_README >> "$filename"
 
     echo "$filename"

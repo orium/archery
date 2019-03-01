@@ -6,6 +6,7 @@
 [![Github stars](https://img.shields.io/github/stars/orium/archery.svg?logo=github)](https://github.com/orium/archery/stargazers)
 [![Documentation](https://docs.rs/archery/badge.svg)](https://docs.rs/archery/)
 [![License](https://img.shields.io/crates/l/archery.svg)](./LICENSE.md)
+<img src="./images/archery.svg" width="240" align="right">
 
 # Archery
 

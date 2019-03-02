@@ -42,7 +42,24 @@ codecov = { repository = "orium/archery", branch = "master", service = "github" 
 static_assertions = "0.3"
 
 [dev-dependencies]
+criterion = "0.2"
 pretty_assertions = "0.6"
 
 [features]
 fatal-warnings = []
+
+[[bench]]
+name = "std_rc"
+harness = false
+
+[[bench]]
+name = "std_arc"
+harness = false
+
+[[bench]]
+name = "archery_shared_pointer_rc"
+harness = false
+
+[[bench]]
+name = "archery_shared_pointer_arc"
+harness = false

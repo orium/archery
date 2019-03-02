@@ -29,6 +29,7 @@ trap on_failure ERR
 
 cargo build --features fatal-warnings --all-targets
 cargo test  --features fatal-warnings
+cargo bench --features fatal-warnings -- --test
 cargo doc   --features fatal-warnings
 
 # Tests for memory safety and memory leaks with miri.

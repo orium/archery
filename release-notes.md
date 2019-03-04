@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.1
+
+* Minor fix in README.
+
 ## 0.2.0
 
 * Added some functionality to `SharedPointer` that you would expect from `Rc`/`Arc`.

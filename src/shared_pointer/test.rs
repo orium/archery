@@ -150,7 +150,7 @@ fn test_clone() {
     assert_eq!(ptr_clone.get(), 3);
 }
 
-fn hash<T: Hash>(pointer: &SharedPointer<T, SharedPointerKindRc>) -> u64 {
+fn hash<T: Hash, P: SharedPointerKind>(pointer: &SharedPointer<T, P>) -> u64 {
     let mut hasher = std::collections::hash_map::DefaultHasher::new();
 
     pointer.hash(&mut hasher);
@@ -163,8 +163,22 @@ fn test_hash() {
     let ptr_42: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
     let ptr_hello: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new("hello");
 
-    assert_eq!(hash(&ptr_42), hash(&SharedPointer::new(42)));
-    assert_eq!(hash(&ptr_hello), hash(&SharedPointer::new("hello")));
+    assert_eq!(
+        hash(&ptr_42),
+        hash(&SharedPointer::<_, SharedPointerKindRc>::new(42))
+    );
+    assert_eq!(
+        hash(&ptr_hello),
+        hash(&SharedPointer::<_, SharedPointerKindRc>::new("hello"))
+    );
+}
+
+#[test]
+fn test_hash_pointer_kind_consistent() {
+    let ptr_hello_rc: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new("hello");
+    let ptr_hello_arc: SharedPointer<_, SharedPointerKindArc> = SharedPointer::new("hello");
+
+    assert_eq!(hash(&ptr_hello_rc), hash(&ptr_hello_arc));
 }
 
 #[test]

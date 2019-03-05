@@ -7,6 +7,19 @@ use std::fmt::Debug;
 
 /// Trait for [type constructors](https://en.wikipedia.org/wiki/Type_constructor) of
 /// reference-counting pointers.
+//
+// There are two conditions for types implementing this trait to be used in a safe way:
+//
+// 1. Always use the correct type `T`.
+// 2. Make sure that you use it wrapped in something that derives the correct auto-traits taking
+//    into account the type of `T`.
+//
+// To elaborate on point 2: a `SharedPointerKindArc` will always implement `Send + Sync`, but that
+// is only safe if the actually type that `SharedPointerKindArc` holds is in fact `Send + Sync`.
+// This means that a safe wrapper around this type must make sure it does not implement
+// `Send + Sync` unless `T: Send + Sync`.  This is holds true for `SharedPointer` since it has a
+// phantom field with `T`, thus the compiler will only make `SharedPointer<T>` implement
+// `Send + Sync` if `T: Send + Sync`.
 pub trait SharedPointerKind: Sized + Debug {
     fn new<T>(v: T) -> Self;
     fn from_box<T>(v: Box<T>) -> Self;

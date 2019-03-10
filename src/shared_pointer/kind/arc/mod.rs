@@ -4,7 +4,6 @@
  */
 
 use crate::shared_pointer::kind::SharedPointerKind;
-use static_assertions::assert_eq_size;
 use std::fmt;
 use std::fmt::Debug;
 use std::fmt::Formatter;
@@ -48,7 +47,7 @@ impl SharedPointerKindArc {
         // Static check to make sure we are not messing up the sizes.
         // This could happen if we allowed for `T` to be unsized, because it would need to be
         // represented as a wide pointer inside `Arc`.
-        assert_eq_size!(UntypedArc, Arc<T>);
+        static_assertions::assert_eq_size!(UntypedArc, Arc<T>);
 
         &*arc_t
     }

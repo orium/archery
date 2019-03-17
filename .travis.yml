@@ -25,8 +25,7 @@ install:
 
   - rustup component add rustfmt
 
-  # `cargo-deadlinks` does not work on windows.
-  - test "$TRAVIS_OS_NAME" = windows || cargo install cargo-deadlinks
+  - cargo install cargo-deadlinks
 
 script:
   - ./tools/check.sh

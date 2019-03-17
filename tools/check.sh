@@ -20,8 +20,7 @@ function on_failure {
     echo -e "${RED}Whoopsie-daisy: something failed!$NC" >&2
 }
 
-# `cargo-deadlinks` does not work on windows.
-test "$(os)" = windows || assert_installed "cargo-deadlinks"
+assert_installed "cargo-deadlinks"
 assert_installed "cargo-fmt"
 assert_installed "cargo-miri"
 
@@ -35,8 +34,7 @@ cargo doc   --features fatal-warnings
 # Tests for memory safety and memory leaks with miri.
 cargo +nightly miri test
 
-# `cargo-deadlinks` does not work on windows.
-test "$TRAVIS_OS_NAME" = windows || cargo deadlinks
+cargo deadlinks
 
 cargo package --allow-dirty
 cargo fmt -- --check

@@ -4,7 +4,7 @@ dist: xenial
 os:
   - linux
   - osx
-  - windows
+#  - windows # TODO This takes too long and travis timeouts.  We need to wait until the miri component is available.  See https://github.com/rust-lang/miri/issues/520.
 
 rust:
   - stable

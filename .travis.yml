@@ -17,10 +17,10 @@ matrix:
 
 install:
   # Install miri.
-  # TODO This will get simpler once rustup 1.17 is release, since miri will be just another component :D
+  # TODO This will eventually be stabilized.
   - rustup toolchain install nightly
+  - rustup component add --toolchain nightly miri-preview
   - rustup component add --toolchain nightly rust-src
-  - cargo +nightly install --force --git https://github.com/rust-lang/miri miri
   - cargo install xargo
 
   - rustup component add rustfmt

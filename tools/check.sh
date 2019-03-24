@@ -26,18 +26,27 @@ assert_installed "cargo-miri"
 
 trap on_failure ERR
 
+echo 'Building:'
 cargo build --features fatal-warnings --all-targets
+echo 'Testing:'
 cargo test  --features fatal-warnings
+echo 'Checking the benchmarks:'
 cargo bench --features fatal-warnings -- --test
-cargo doc   --features fatal-warnings
+echo 'Checking documentation:'
+cargo doc --features fatal-warnings
 
 # Tests for memory safety and memory leaks with miri.
+echo 'Testing with miri:'
 cargo +nightly miri test
 
+echo 'Checking links:'
 cargo deadlinks
 
+echo 'Checking packaging:'
 cargo package --allow-dirty
+echo 'Checking code style:'
 cargo fmt -- --check
+echo 'Checking readme:'
 ./tools/update-readme.sh --check
 
 echo

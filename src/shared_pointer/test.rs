@@ -28,10 +28,7 @@ fn test_deref() {
     assert_eq!(ptr_box_dyn_hello.to_string(), "hello");
 
     assert_eq!(*Borrow::<i32>::borrow(&ptr_42), 42);
-    assert_eq!(
-        Borrow::<Box<dyn ToString>>::borrow(&ptr_box_dyn_hello).to_string(),
-        "hello"
-    );
+    assert_eq!(Borrow::<Box<dyn ToString>>::borrow(&ptr_box_dyn_hello).to_string(), "hello");
 
     assert_eq!(*ptr_42.as_ref(), 42);
     assert_eq!(ptr_box_dyn_hello.as_ref().to_string(), "hello");
@@ -163,14 +160,8 @@ fn test_hash() {
     let ptr_42: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
     let ptr_hello: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new("hello");
 
-    assert_eq!(
-        hash(&ptr_42),
-        hash(&SharedPointer::<_, SharedPointerKindRc>::new(42))
-    );
-    assert_eq!(
-        hash(&ptr_hello),
-        hash(&SharedPointer::<_, SharedPointerKindRc>::new("hello"))
-    );
+    assert_eq!(hash(&ptr_42), hash(&SharedPointer::<_, SharedPointerKindRc>::new(42)));
+    assert_eq!(hash(&ptr_hello), hash(&SharedPointer::<_, SharedPointerKindRc>::new("hello")));
 }
 
 #[test]
@@ -220,18 +211,9 @@ fn test_ord() {
         Some(Ordering::Greater)
     );
 
-    assert_eq!(
-        ptr_22.cmp(&SharedPointer::<_, SharedPointerKindRc>::new(22)),
-        Ordering::Equal
-    );
-    assert_eq!(
-        ptr_22.cmp(&SharedPointer::<_, SharedPointerKindRc>::new(42)),
-        Ordering::Less
-    );
-    assert_eq!(
-        ptr_42.cmp(&SharedPointer::<_, SharedPointerKindRc>::new(22)),
-        Ordering::Greater
-    );
+    assert_eq!(ptr_22.cmp(&SharedPointer::<_, SharedPointerKindRc>::new(22)), Ordering::Equal);
+    assert_eq!(ptr_22.cmp(&SharedPointer::<_, SharedPointerKindRc>::new(42)), Ordering::Less);
+    assert_eq!(ptr_42.cmp(&SharedPointer::<_, SharedPointerKindRc>::new(22)), Ordering::Greater);
 
     assert!(ptr_22 < SharedPointer::<_, SharedPointerKindRc>::new(42));
     assert!(ptr_22 < SharedPointer::<_, SharedPointerKindArc>::new(42));
@@ -299,10 +281,7 @@ fn test_debug() {
 fn test_fmt_pointer() {
     let ptr: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(314);
 
-    assert_eq!(
-        format!("{:p}", ptr),
-        format!("{:p}", ptr.deref() as *const i32)
-    );
+    assert_eq!(format!("{:p}", ptr), format!("{:p}", ptr.deref() as *const i32));
 }
 
 #[test]

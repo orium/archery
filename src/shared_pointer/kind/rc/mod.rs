@@ -28,9 +28,7 @@ pub struct SharedPointerKindRc {
 impl SharedPointerKindRc {
     #[inline(always)]
     fn new_from_inner<T>(rc: Rc<T>) -> SharedPointerKindRc {
-        SharedPointerKindRc {
-            inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }),
-        }
+        SharedPointerKindRc { inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }) }
     }
 
     #[inline(always)]
@@ -99,9 +97,7 @@ impl SharedPointerKind for SharedPointerKindRc {
 
     #[inline(always)]
     unsafe fn clone<T>(&self) -> SharedPointerKindRc {
-        SharedPointerKindRc {
-            inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())),
-        }
+        SharedPointerKindRc { inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())) }
     }
 
     #[inline(always)]

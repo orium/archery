@@ -40,9 +40,5 @@ fn archery_shared_pointer_rc_clone(c: &mut Criterion) {
     });
 }
 
-criterion_group!(
-    benches,
-    archery_shared_pointer_rc_deref,
-    archery_shared_pointer_rc_clone
-);
+criterion_group!(benches, archery_shared_pointer_rc_deref, archery_shared_pointer_rc_clone);
 criterion_main!(benches);

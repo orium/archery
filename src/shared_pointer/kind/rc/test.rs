@@ -26,10 +26,7 @@ fn test_deref() {
 
     unsafe {
         assert_eq!(ptr_42.deref::<i32>(), &42);
-        assert_eq!(
-            ptr_box_dyn_hello.deref::<Box<dyn ToString>>().to_string(),
-            "hello"
-        );
+        assert_eq!(ptr_box_dyn_hello.deref::<Box<dyn ToString>>().to_string(), "hello");
 
         ptr_42.drop::<i32>();
         ptr_box_dyn_hello.drop::<Box<dyn ToString>>();

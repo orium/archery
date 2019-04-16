@@ -28,9 +28,7 @@ pub struct SharedPointerKindArc {
 impl SharedPointerKindArc {
     #[inline(always)]
     fn new_from_inner<T>(arc: Arc<T>) -> SharedPointerKindArc {
-        SharedPointerKindArc {
-            inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }),
-        }
+        SharedPointerKindArc { inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }) }
     }
 
     #[inline(always)]
@@ -99,9 +97,7 @@ impl SharedPointerKind for SharedPointerKindArc {
 
     #[inline(always)]
     unsafe fn clone<T>(&self) -> SharedPointerKindArc {
-        SharedPointerKindArc {
-            inner: ManuallyDrop::new(Arc::clone(self.as_inner_ref())),
-        }
+        SharedPointerKindArc { inner: ManuallyDrop::new(Arc::clone(self.as_inner_ref())) }
     }
 
     #[inline(always)]

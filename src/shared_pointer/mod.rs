@@ -89,10 +89,7 @@ where
 {
     #[inline(always)]
     fn new_from_inner(ptr: P) -> SharedPointer<T, P> {
-        SharedPointer {
-            ptr: ManuallyDrop::new(ptr),
-            _phantom_t: PhantomData,
-        }
+        SharedPointer { ptr: ManuallyDrop::new(ptr), _phantom_t: PhantomData }
     }
 
     #[inline(always)]

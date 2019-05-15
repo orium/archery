@@ -21,7 +21,7 @@ install:
   - rustup toolchain install nightly
   - rustup component add --toolchain nightly miri-preview
   - rustup component add --toolchain nightly rust-src
-  - cargo install --git https://github.com/japanic/xargo -f
+  - cargo install xargo
 
   - rustup component add rustfmt
 

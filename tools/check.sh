@@ -36,8 +36,11 @@ echo 'Checking documentation:'
 cargo doc --features fatal-warnings
 
 # Tests for memory safety and memory leaks with miri.
-echo 'Testing with miri:'
-cargo +nightly miri test
+if [ -z "$MIRI_TOOLCHAIN" ]; then
+    MIRI_TOOLCHAIN=nightly
+fi
+echo "Testing with miri (with toolchain $MIRI_TOOLCHAIN):"
+echo cargo +$MIRI_TOOLCHAIN miri test
 
 echo 'Checking links:'
 cargo deadlinks

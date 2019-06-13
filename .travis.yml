@@ -15,12 +15,16 @@ matrix:
   allow_failures:
     - rust: nightly
 
+env:
+  # Miri breaks frequently so we install it from a specific nightly version.
+  - MIRI_TOOLCHAIN=nightly-2019-06-07
+
 install:
   # Install miri.
   # TODO This will eventually be stabilized.
-  - rustup toolchain install nightly
-  - rustup component add --toolchain nightly miri-preview
-  - rustup component add --toolchain nightly rust-src
+  - rustup toolchain install $MIRI_TOOLCHAIN
+  - rustup component add --toolchain $MIRI_TOOLCHAIN miri-preview
+  - rustup component add --toolchain $MIRI_TOOLCHAIN rust-src
   - cargo install xargo
 
   - rustup component add rustfmt
@@ -28,7 +32,7 @@ install:
   - cargo install cargo-deadlinks
 
 script:
-  - ./tools/check.sh
+  - MIRI_TOOLCHAIN=$MIRI_TOOLCHAIN ./tools/check.sh
 
 after_success:
   test "$TRAVIS_OS_NAME" = linux

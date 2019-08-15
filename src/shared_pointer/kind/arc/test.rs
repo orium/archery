@@ -5,12 +5,12 @@
 
 use super::*;
 use pretty_assertions::assert_eq;
-use static_assertions::assert_impl;
+use static_assertions::assert_impl_all;
 use std::cell::Cell;
 
 type PointerKind = SharedPointerKindArc;
 
-assert_impl!(
+assert_impl_all!(
     shared_pointer_kind_arc_impls_send_sync;
     SharedPointerKindArc,
     Send,

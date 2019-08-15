@@ -8,11 +8,11 @@
 use super::*;
 use kind::SharedPointerKindArc;
 use kind::SharedPointerKindRc;
-use static_assertions::assert_impl;
+use static_assertions::assert_impl_all;
 use std::cell::Cell;
 use std::mem;
 
-assert_impl!(
+assert_impl_all!(
     shared_pointer_arc_impls_send_sync;
     SharedPointer<i32, SharedPointerKindArc>,
     Send, Sync

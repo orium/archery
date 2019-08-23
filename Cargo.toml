@@ -51,16 +51,20 @@ fatal-warnings = []
 
 [[bench]]
 name = "std_rc"
+path = "benches/std_rc.rs"
 harness = false
 
 [[bench]]
 name = "std_arc"
+path = "benches/std_arc.rs"
 harness = false
 
 [[bench]]
 name = "archery_shared_pointer_rc"
+path = "benches/archery_shared_pointer_rc.rs"
 harness = false
 
 [[bench]]
 name = "archery_shared_pointer_arc"
+path = "benches/archery_shared_pointer_arc.rs"
 harness = false

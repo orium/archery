@@ -70,7 +70,7 @@ use std::ptr;
 /// #     }
 /// # }
 /// #
-/// let pair: KeyValuePair<_, _, SharedPointerKindRc> =
+/// let pair: KeyValuePair<_, _, RcK> =
 ///     KeyValuePair::new("António Variações", 1944);
 ///
 /// assert_eq!(*pair.value, 1944);

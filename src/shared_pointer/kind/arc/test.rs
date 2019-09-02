@@ -8,11 +8,11 @@ use pretty_assertions::assert_eq;
 use static_assertions::assert_impl_all;
 use std::cell::Cell;
 
-type PointerKind = SharedPointerKindArc;
+type PointerKind = ArcK;
 
 assert_impl_all!(
     shared_pointer_kind_arc_impls_send_sync;
-    SharedPointerKindArc,
+    ArcK,
     Send,
     Sync
 );
@@ -173,7 +173,7 @@ fn test_clone() {
 fn test_debug() {
     let mut ptr = PointerKind::new::<i32>(42);
 
-    assert_eq!(format!("{:?}", ptr), "SharedPointerKindArc");
+    assert_eq!(format!("{:?}", ptr), "ArcK");
 
     unsafe {
         ptr.drop::<i32>();

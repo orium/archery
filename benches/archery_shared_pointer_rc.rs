@@ -15,7 +15,7 @@ fn archery_shared_pointer_rc_deref(c: &mut Criterion) {
 
     c.bench_function("archery shared pointer rc deref", move |b| {
         b.iter(|| {
-            let rc: SharedPointer<_, SharedPointerKindRc> = SharedPointer::new(42);
+            let rc: SharedPointer<_, RcK> = SharedPointer::new(42);
 
             for _ in 0..limit {
                 black_box(rc.deref());
@@ -33,7 +33,7 @@ fn archery_shared_pointer_rc_clone(c: &mut Criterion) {
         b.iter_with_setup(
             || Vec::with_capacity(limit),
             |mut vec| {
-                vec.resize(limit, SharedPointer::<_, SharedPointerKindRc>::new(42));
+                vec.resize(limit, SharedPointer::<_, RcK>::new(42));
                 vec
             },
         )

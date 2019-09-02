@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.0
+
+* Renamed `SharedPointerKindRc` and `SharedPointerKindArc` to `RcK` and `ArcK`, respectively.
+
 ## 0.2.1
 
 * Minor fix in README.

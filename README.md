@@ -69,7 +69,7 @@ impl<K, V, P: SharedPointerKind> KeyValuePair<K, V, P> {
 To use it just plug-in the kind of pointer you want:
 
 ```rust
-let pair: KeyValuePair<_, _, SharedPointerKindRc> =
+let pair: KeyValuePair<_, _, RcK> =
     KeyValuePair::new("António Variações", 1944);
 
 assert_eq!(*pair.value, 1944);

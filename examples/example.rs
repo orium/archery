@@ -25,12 +25,12 @@ impl<P: SharedPointerKind> Book<P> {
 
 fn main() {
     // To create a book that uses a non-atomic reference-counting pointer you specify the
-    // `SharedPointerKindRc` type argument.
-    let book_rc = Book::<SharedPointerKindRc>::new(Image {}, Vec::new());
+    // `RcK` type argument.
+    let book_rc = Book::<RcK>::new(Image {}, Vec::new());
 
     // Similarly, you can create an atomic reference-counting pointer with the
-    // `SharedPointerKindArc` type argument.
-    let book_arc = Book::<SharedPointerKindArc>::new(Image {}, Vec::new());
+    // `ArcK` type argument.
+    let book_arc = Book::<ArcK>::new(Image {}, Vec::new());
 
     // `book_arc` will have a `cover` that is backed by an `Arc` pointer, thus implementing `Sync`:
     let _: Box<dyn Sync> = Box::new(book_arc);

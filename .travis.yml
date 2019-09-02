@@ -18,7 +18,7 @@ matrix:
 
 env:
   # Miri breaks frequently so we install it from a specific nightly version.
-  - MIRI_TOOLCHAIN=nightly-2019-08-22
+  - MIRI_TOOLCHAIN=nightly-2019-09-01
 
 install:
   # Install miri.

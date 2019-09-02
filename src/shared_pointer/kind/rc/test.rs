@@ -6,7 +6,7 @@
 use super::*;
 use std::cell::Cell;
 
-type PointerKind = SharedPointerKindRc;
+type PointerKind = RcK;
 
 #[test]
 fn test_from_box_t() {
@@ -164,7 +164,7 @@ fn test_clone() {
 fn test_debug() {
     let mut ptr = PointerKind::new::<i32>(42);
 
-    assert_eq!(format!("{:?}", ptr), "SharedPointerKindRc");
+    assert_eq!(format!("{:?}", ptr), "RcK");
 
     unsafe {
         ptr.drop::<i32>();

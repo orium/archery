@@ -18,17 +18,17 @@ type UntypedRc = Rc<()>;
 
 /// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
 /// [`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) pointers.
-pub struct SharedPointerKindRc {
+pub struct RcK {
     /// We use `ManuallyDrop` here, so that we can drop it explicitly as `Rc<T>`.  Not sure if it
     /// can be dropped as `UntypedRc`, but it seems to be playing with fire (even more than we
     /// already are).
     inner: ManuallyDrop<UntypedRc>,
 }
 
-impl SharedPointerKindRc {
+impl RcK {
     #[inline(always)]
-    fn new_from_inner<T>(rc: Rc<T>) -> SharedPointerKindRc {
-        SharedPointerKindRc { inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }) }
+    fn new_from_inner<T>(rc: Rc<T>) -> RcK {
+        RcK { inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }) }
     }
 
     #[inline(always)]
@@ -58,15 +58,15 @@ impl SharedPointerKindRc {
     }
 }
 
-impl SharedPointerKind for SharedPointerKindRc {
+impl SharedPointerKind for RcK {
     #[inline(always)]
-    fn new<T>(v: T) -> SharedPointerKindRc {
-        SharedPointerKindRc::new_from_inner(Rc::new(v))
+    fn new<T>(v: T) -> RcK {
+        RcK::new_from_inner(Rc::new(v))
     }
 
     #[inline(always)]
-    fn from_box<T>(v: Box<T>) -> SharedPointerKindRc {
-        SharedPointerKindRc::new_from_inner::<T>(Rc::from(v))
+    fn from_box<T>(v: Box<T>) -> RcK {
+        RcK::new_from_inner::<T>(Rc::from(v))
     }
 
     #[inline(always)]
@@ -75,9 +75,8 @@ impl SharedPointerKind for SharedPointerKindRc {
     }
 
     #[inline(always)]
-    unsafe fn try_unwrap<T>(self) -> Result<T, SharedPointerKindRc> {
-        Rc::try_unwrap(self.take_inner())
-            .map_err(|inner| SharedPointerKindRc::new_from_inner(inner))
+    unsafe fn try_unwrap<T>(self) -> Result<T, RcK> {
+        Rc::try_unwrap(self.take_inner()).map_err(|inner| RcK::new_from_inner(inner))
     }
 
     #[inline(always)]
@@ -96,8 +95,8 @@ impl SharedPointerKind for SharedPointerKindRc {
     }
 
     #[inline(always)]
-    unsafe fn clone<T>(&self) -> SharedPointerKindRc {
-        SharedPointerKindRc { inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())) }
+    unsafe fn clone<T>(&self) -> RcK {
+        RcK { inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())) }
     }
 
     #[inline(always)]
@@ -106,10 +105,10 @@ impl SharedPointerKind for SharedPointerKindRc {
     }
 }
 
-impl Debug for SharedPointerKindRc {
+impl Debug for RcK {
     #[inline(always)]
     fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
-        f.write_str("SharedPointerKindRc")
+        f.write_str("RcK")
     }
 }
 

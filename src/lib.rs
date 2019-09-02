@@ -92,7 +92,7 @@
 //! # /*DROP_LINE_IN_README*/     }
 //! # /*DROP_LINE_IN_README*/ }
 //! # /*DROP_LINE_IN_README*/
-//! let pair: KeyValuePair<_, _, SharedPointerKindRc> =
+//! let pair: KeyValuePair<_, _, RcK> =
 //!     KeyValuePair::new("António Variações", 1944);
 //!
 //! assert_eq!(*pair.value, 1944);
@@ -121,6 +121,6 @@ pub use shared_pointer::SharedPointer;
 pub use shared_pointer::kind::SharedPointerKind;
 
 #[doc(no_inline)]
-pub use shared_pointer::kind::SharedPointerKindArc;
+pub use shared_pointer::kind::ArcK;
 #[doc(no_inline)]
-pub use shared_pointer::kind::SharedPointerKindRc;
+pub use shared_pointer::kind::RcK;

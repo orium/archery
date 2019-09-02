@@ -14,8 +14,8 @@ use std::fmt::Debug;
 // 2. Make sure that you use it wrapped in something that derives the correct auto-traits taking
 //    into account the type of `T`.
 //
-// To elaborate on point 2: a `SharedPointerKindArc` will always implement `Send + Sync`, but that
-// is only safe if the actually type that `SharedPointerKindArc` holds is in fact `Send + Sync`.
+// To elaborate on point 2: a `ArcK` will always implement `Send + Sync`, but that
+// is only safe if the actually type that `ArcK` holds is in fact `Send + Sync`.
 // This means that a safe wrapper around this type must make sure it does not implement
 // `Send + Sync` unless `T: Send + Sync`.  This is holds true for `SharedPointer` since it has a
 // phantom field with `T`, thus the compiler will only make `SharedPointer<T>` implement
@@ -36,6 +36,6 @@ mod arc;
 mod rc;
 
 #[doc(inline)]
-pub use arc::SharedPointerKindArc;
+pub use arc::ArcK;
 #[doc(inline)]
-pub use rc::SharedPointerKindRc;
+pub use rc::RcK;

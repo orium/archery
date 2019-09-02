@@ -18,17 +18,17 @@ type UntypedArc = Arc<()>;
 
 /// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
 /// [`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) pointers.
-pub struct SharedPointerKindArc {
+pub struct ArcK {
     /// We use `ManuallyDrop` here, so that we can drop it explicitly as `Arc<T>`.  Not sure if it
     /// can be dropped as `UntypedArc`, but it seems to be playing with fire (even more than we
     /// already are).
     inner: ManuallyDrop<UntypedArc>,
 }
 
-impl SharedPointerKindArc {
+impl ArcK {
     #[inline(always)]
-    fn new_from_inner<T>(arc: Arc<T>) -> SharedPointerKindArc {
-        SharedPointerKindArc { inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }) }
+    fn new_from_inner<T>(arc: Arc<T>) -> ArcK {
+        ArcK { inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }) }
     }
 
     #[inline(always)]
@@ -58,15 +58,15 @@ impl SharedPointerKindArc {
     }
 }
 
-impl SharedPointerKind for SharedPointerKindArc {
+impl SharedPointerKind for ArcK {
     #[inline(always)]
-    fn new<T>(v: T) -> SharedPointerKindArc {
-        SharedPointerKindArc::new_from_inner(Arc::new(v))
+    fn new<T>(v: T) -> ArcK {
+        ArcK::new_from_inner(Arc::new(v))
     }
 
     #[inline(always)]
-    fn from_box<T>(v: Box<T>) -> SharedPointerKindArc {
-        SharedPointerKindArc::new_from_inner::<T>(Arc::from(v))
+    fn from_box<T>(v: Box<T>) -> ArcK {
+        ArcK::new_from_inner::<T>(Arc::from(v))
     }
 
     #[inline(always)]
@@ -75,9 +75,8 @@ impl SharedPointerKind for SharedPointerKindArc {
     }
 
     #[inline(always)]
-    unsafe fn try_unwrap<T>(self) -> Result<T, SharedPointerKindArc> {
-        Arc::try_unwrap(self.take_inner())
-            .map_err(|inner| SharedPointerKindArc::new_from_inner(inner))
+    unsafe fn try_unwrap<T>(self) -> Result<T, ArcK> {
+        Arc::try_unwrap(self.take_inner()).map_err(|inner| ArcK::new_from_inner(inner))
     }
 
     #[inline(always)]
@@ -96,8 +95,8 @@ impl SharedPointerKind for SharedPointerKindArc {
     }
 
     #[inline(always)]
-    unsafe fn clone<T>(&self) -> SharedPointerKindArc {
-        SharedPointerKindArc { inner: ManuallyDrop::new(Arc::clone(self.as_inner_ref())) }
+    unsafe fn clone<T>(&self) -> ArcK {
+        ArcK { inner: ManuallyDrop::new(Arc::clone(self.as_inner_ref())) }
     }
 
     #[inline(always)]
@@ -106,10 +105,10 @@ impl SharedPointerKind for SharedPointerKindArc {
     }
 }
 
-impl Debug for SharedPointerKindArc {
+impl Debug for ArcK {
     #[inline(always)]
     fn fmt(&self, f: &mut Formatter) -> Result<(), fmt::Error> {
-        f.write_str("SharedPointerKindArc")
+        f.write_str("ArcK")
     }
 }
 

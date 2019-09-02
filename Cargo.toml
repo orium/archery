@@ -42,7 +42,7 @@ codecov = { repository = "orium/archery", branch = "master", service = "github" 
 static_assertions = "0.3"
 
 [dev-dependencies]
-criterion = "0.2"
+criterion = "0.3"
 pretty_assertions = "0.6"
 compiletest_rs = { version = "0.3", features = [ "tmp", "stable" ] }
 

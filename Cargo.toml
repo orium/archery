@@ -44,7 +44,9 @@ static_assertions = "0.3"
 [dev-dependencies]
 criterion = "0.3"
 pretty_assertions = "0.6"
-compiletest_rs = { version = "0.3", features = [ "tmp", "stable" ] }
+# TODO We have the exact version here because compiletest_rs `0.3.23` is broken.  Set version to `0.3` once a fix is
+#      published.  See https://github.com/laumann/compiletest-rs/issues/186.
+compiletest_rs = { version = "=0.3.22", features = [ "tmp", "stable" ] }
 
 [features]
 fatal-warnings = []

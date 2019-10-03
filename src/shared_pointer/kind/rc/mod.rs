@@ -45,7 +45,9 @@ impl RcK {
         // Static check to make sure we are not messing up the sizes.
         // This could happen if we allowed for `T` to be unsized, because it would need to be
         // represented as a wide pointer inside `Rc`.
-        static_assertions::assert_eq_size!(UntypedRc, Rc<T>);
+        // TODO Use static_assertion when https://github.com/nvzqz/static-assertions-rs/issues/21
+        //      gets fixed
+        let _ = mem::transmute::<UntypedRc, Rc<T>>;
 
         &*rc_t
     }

@@ -45,7 +45,9 @@ impl ArcK {
         // Static check to make sure we are not messing up the sizes.
         // This could happen if we allowed for `T` to be unsized, because it would need to be
         // represented as a wide pointer inside `Arc`.
-        static_assertions::assert_eq_size!(UntypedArc, Arc<T>);
+        // TODO Use static_assertion when https://github.com/nvzqz/static-assertions-rs/issues/21
+        //      gets fixed
+        let _ = mem::transmute::<UntypedArc, Arc<T>>;
 
         &*arc_t
     }

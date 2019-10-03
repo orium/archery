@@ -10,12 +10,7 @@ use std::cell::Cell;
 
 type PointerKind = ArcK;
 
-assert_impl_all!(
-    shared_pointer_kind_arc_impls_send_sync;
-    ArcK,
-    Send,
-    Sync
-);
+assert_impl_all!(ArcK: Send, Sync);
 
 #[test]
 fn test_from_box_t() {

@@ -12,11 +12,7 @@ use static_assertions::assert_impl_all;
 use std::cell::Cell;
 use std::mem;
 
-assert_impl_all!(
-    shared_pointer_arc_impls_send_sync;
-    SharedPointer<i32, ArcK>,
-    Send, Sync
-);
+assert_impl_all!(SharedPointer<i32, ArcK>: Send, Sync);
 
 #[test]
 fn test_deref() {

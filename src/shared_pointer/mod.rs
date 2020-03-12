@@ -98,14 +98,12 @@ where
     }
 
     #[inline(always)]
-    pub fn try_unwrap(this: SharedPointer<T, P>) -> Result<T, SharedPointer<T, P>> {
-        // TODO Use ManuallyDrop::take() once it gets stable.
-        //      See https://github.com/rust-lang/rust/issues/55422.
-        let ptr: P = ManuallyDrop::into_inner(unsafe { ptr::read(&this.ptr) });
+    pub fn try_unwrap(mut this: SharedPointer<T, P>) -> Result<T, SharedPointer<T, P>> {
+        let ptr: P = unsafe { ManuallyDrop::take(&mut this.ptr) };
 
         mem::forget(this);
 
-        unsafe { ptr.try_unwrap::<T>() }.map_err(|ptr| SharedPointer::new_from_inner(ptr))
+        unsafe { ptr.try_unwrap::<T>() }.map_err(SharedPointer::new_from_inner)
     }
 
     #[inline(always)]

@@ -78,7 +78,7 @@ impl SharedPointerKind for RcK {
 
     #[inline(always)]
     unsafe fn try_unwrap<T>(self) -> Result<T, RcK> {
-        Rc::try_unwrap(self.take_inner()).map_err(|inner| RcK::new_from_inner(inner))
+        Rc::try_unwrap(self.take_inner()).map_err(RcK::new_from_inner)
     }
 
     #[inline(always)]

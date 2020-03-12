@@ -78,7 +78,7 @@ impl SharedPointerKind for ArcK {
 
     #[inline(always)]
     unsafe fn try_unwrap<T>(self) -> Result<T, ArcK> {
-        Arc::try_unwrap(self.take_inner()).map_err(|inner| ArcK::new_from_inner(inner))
+        Arc::try_unwrap(self.take_inner()).map_err(ArcK::new_from_inner)
     }
 
     #[inline(always)]

@@ -11,6 +11,7 @@ use kind::RcK;
 use static_assertions::assert_impl_all;
 use std::cell::Cell;
 use std::mem;
+use std::string::ToString;
 
 assert_impl_all!(SharedPointer<i32, ArcK>: Send, Sync);
 

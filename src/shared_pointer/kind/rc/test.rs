@@ -5,6 +5,7 @@
 
 use super::*;
 use std::cell::Cell;
+use std::string::ToString;
 
 type PointerKind = RcK;
 

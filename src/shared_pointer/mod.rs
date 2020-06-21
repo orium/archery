@@ -4,19 +4,20 @@
  */
 
 use crate::shared_pointer::kind::SharedPointerKind;
-use std::borrow::Borrow;
-use std::cmp::Ordering;
-use std::fmt;
-use std::fmt::Debug;
-use std::fmt::Display;
-use std::fmt::Formatter;
-use std::hash::Hash;
-use std::hash::Hasher;
-use std::marker::PhantomData;
-use std::mem;
-use std::mem::ManuallyDrop;
-use std::ops::Deref;
-use std::ptr;
+use alloc::boxed::Box;
+use core::borrow::Borrow;
+use core::cmp::Ordering;
+use core::fmt;
+use core::fmt::Debug;
+use core::fmt::Display;
+use core::fmt::Formatter;
+use core::hash::Hash;
+use core::hash::Hasher;
+use core::marker::PhantomData;
+use core::mem;
+use core::mem::ManuallyDrop;
+use core::ops::Deref;
+use core::ptr;
 
 /// Pointer to shared data with reference-counting.
 ///

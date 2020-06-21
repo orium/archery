@@ -7,6 +7,7 @@ use super::*;
 use pretty_assertions::assert_eq;
 use static_assertions::assert_impl_all;
 use std::cell::Cell;
+use std::string::ToString;
 
 type PointerKind = ArcK;
 

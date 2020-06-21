@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#![no_std]
 #![cfg_attr(feature = "fatal-warnings", deny(warnings))]
 #![deny(clippy::correctness)]
 #![warn(clippy::pedantic)]
@@ -113,6 +114,12 @@
 //! but offers ugly ergonomics (see
 //! [here](https://github.com/Marwes/rpds/blob/e482d5abbaa6c876d7c624e497affe7299bbeece/src/sequence/vector/mod.rs#L153)
 //! and [here](https://github.com/Marwes/rpds/blob/e482d5abbaa6c876d7c624e497affe7299bbeece/src/sequence/vector/mod.rs#L249)).
+
+extern crate alloc;
+
+#[cfg(test)]
+#[macro_use]
+extern crate std;
 
 pub mod shared_pointer;
 

@@ -15,6 +15,7 @@ keywords = [
     "rc",
     "arc",
     "reference-counting",
+    "no_std"
 ]
 
 categories = [

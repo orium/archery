@@ -4,15 +4,16 @@
  */
 
 use crate::shared_pointer::kind::SharedPointerKind;
-use std::fmt;
-use std::fmt::Debug;
-use std::fmt::Formatter;
-use std::mem;
-use std::mem::ManuallyDrop;
-use std::ops::Deref;
-use std::ops::DerefMut;
-use std::ptr;
-use std::sync::Arc;
+use alloc::boxed::Box;
+use alloc::sync::Arc;
+use core::fmt;
+use core::fmt::Debug;
+use core::fmt::Formatter;
+use core::mem;
+use core::mem::ManuallyDrop;
+use core::ops::Deref;
+use core::ops::DerefMut;
+use core::ptr;
 
 type UntypedArc = Arc<()>;
 

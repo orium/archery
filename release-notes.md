@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.4.0
+
+* Added support for `no_std`.
+
 ## 0.3.0
 
 * Renamed `SharedPointerKindRc` and `SharedPointerKindArc` to `RcK` and `ArcK`, respectively.

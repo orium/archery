@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/orium/archery.svg?branch=master)](https://travis-ci.org/orium/archery)
 [![Code Coverage](https://codecov.io/gh/orium/archery/branch/master/graph/badge.svg)](https://codecov.io/gh/orium/archery)
+[![Dependency status](https://deps.rs/repo/github/orium/archery/status.svg)](https://deps.rs/repo/github/orium/archery)
 [![crates.io](https://img.shields.io/crates/v/archery.svg)](https://crates.io/crates/archery)
 [![Downloads](https://img.shields.io/crates/d/archery.svg)](https://crates.io/crates/archery)
 [![Github stars](https://img.shields.io/github/stars/orium/archery.svg?logo=github)](https://github.com/orium/archery/stargazers)

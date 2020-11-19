@@ -19,10 +19,10 @@
 //! # Archery
 //!
 //! Archery is a rust library that offers a way to abstraction over
-//! [`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) and
-//! [`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) smart pointers.
+//! [`Rc`](::alloc::rc::Rc) and
+//! [`Arc`](::alloc::sync::Arc) smart pointers.
 //! This allows you to create data structures where the pointer type is parameterizable, so you can
-//! [avoid the overhead of `Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
+//! [avoid the overhead of `Arc`](::alloc::sync::Arc#thread-safety)
 //! when you don’t need to share data across threads.
 //!
 //! In languages that supports
@@ -46,15 +46,15 @@
 //!
 //! ## Using Archery
 //!
-//! Archery defines a [`SharedPointer`](./shared_pointer/struct.SharedPointer.html)
-//! that receives the [kind of pointer](./shared_pointer/kind/trait.SharedPointerKind.html)
+//! Archery defines a [`SharedPointer`](crate::shared_pointer::SharedPointer)
+//! that receives the [kind of pointer](crate::shared_pointer::kind::SharedPointerKind)
 //! as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
 //! type away.
 //!
 //! ### Example
 //!
 //! Declare a data structure with the pointer kind as a type parameter bounded by
-//! `SharedPointerKind`:
+//! [`SharedPointerKind`](crate::shared_pointer::kind::SharedPointerKind):
 //!
 //! ```rust
 //! use archery::*;
@@ -77,22 +77,22 @@
 //! To use it just plug-in the kind of pointer you want:
 //!
 //! ```rust
-//! # /*DROP_LINE_IN_README*/ use archery::*;
-//! # /*DROP_LINE_IN_README*/
-//! # /*DROP_LINE_IN_README*/ struct KeyValuePair<K, V, P: SharedPointerKind> {
-//! # /*DROP_LINE_IN_README*/    pub key: SharedPointer<K, P>,
-//! # /*DROP_LINE_IN_README*/    pub value: SharedPointer<V, P>,
-//! # /*DROP_LINE_IN_README*/ }
-//! # /*DROP_LINE_IN_README*/
-//! # /*DROP_LINE_IN_README*/ impl<K, V, P: SharedPointerKind> KeyValuePair<K, V, P> {
-//! # /*DROP_LINE_IN_README*/     fn new(key: K, value: V) -> KeyValuePair<K, V, P> {
-//! # /*DROP_LINE_IN_README*/         KeyValuePair {
-//! # /*DROP_LINE_IN_README*/             key: SharedPointer::new(key),
-//! # /*DROP_LINE_IN_README*/             value: SharedPointer::new(value),
-//! # /*DROP_LINE_IN_README*/         }
-//! # /*DROP_LINE_IN_README*/     }
-//! # /*DROP_LINE_IN_README*/ }
-//! # /*DROP_LINE_IN_README*/
+//! # use archery::*;
+//! #
+//! # struct KeyValuePair<K, V, P: SharedPointerKind> {
+//! #    pub key: SharedPointer<K, P>,
+//! #    pub value: SharedPointer<V, P>,
+//! # }
+//! #
+//! # impl<K, V, P: SharedPointerKind> KeyValuePair<K, V, P> {
+//! #     fn new(key: K, value: V) -> KeyValuePair<K, V, P> {
+//! #         KeyValuePair {
+//! #             key: SharedPointer::new(key),
+//! #             value: SharedPointer::new(value),
+//! #         }
+//! #     }
+//! # }
+//! #
 //! let pair: KeyValuePair<_, _, RcK> =
 //!     KeyValuePair::new("António Variações", 1944);
 //!
@@ -101,9 +101,9 @@
 //!
 //! ## Limitations
 //!
-//! Currently it is not possible to have unsized types inside a `SharedPointer`.  As a workaround
-//! you can put the unsized type inside a
-//! [`Box`](https://doc.rust-lang.org/std/boxed/struct.Box.html).
+//! Currently it is not possible to have unsized types inside a
+//! [`SharedPointer`](crate::shared_pointer::SharedPointer).  As a workaround you can put the
+//! unsized type inside a [`Box`](::alloc::boxed::Box).
 //!
 //! # Alternative approaches
 //!

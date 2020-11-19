@@ -29,7 +29,7 @@ jobs:
           toolchain: stable
           override: true
           default: true
-          components: rustfmt
+          components: rustfmt, rust-src
 
       - name: Install miri
         uses: actions-rs/toolchain@v1
@@ -41,6 +41,7 @@ jobs:
 
       - name: Install cargo plugins
         run: |
+          cargo install cargo-sync-readme
           cargo install cargo-deadlinks
 
       - name: Checkout repository

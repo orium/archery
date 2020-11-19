@@ -29,11 +29,11 @@ trap on_failure ERR
 echo 'Building:'
 cargo build --features fatal-warnings --all-targets
 echo 'Testing:'
-cargo test  --features fatal-warnings
+cargo test --features fatal-warnings
 echo 'Checking the benchmarks:'
 cargo bench --features fatal-warnings -- --test
 echo 'Checking documentation:'
-cargo doc --features fatal-warnings
+cargo doc --document-private-items --features fatal-warnings
 
 # Tests for memory safety and memory leaks with miri.
 if [ -z "$MIRI_TOOLCHAIN" ]; then

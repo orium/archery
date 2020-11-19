@@ -18,11 +18,11 @@ use core::ptr;
 type UntypedArc = Arc<()>;
 
 /// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
-/// [`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) pointers.
+/// [`Arc`] pointers.
 pub struct ArcK {
-    /// We use `ManuallyDrop` here, so that we can drop it explicitly as `Arc<T>`.  Not sure if it
-    /// can be dropped as `UntypedArc`, but it seems to be playing with fire (even more than we
-    /// already are).
+    /// We use [`ManuallyDrop`] here, so that we can drop it explicitly as
+    /// [`Arc<T>`](alloc::sync::Arc).  Not sure if it can be dropped as [`UntypedArc`], but it
+    /// seems to be playing with fire (even more than we already are).
     inner: ManuallyDrop<UntypedArc>,
 }
 

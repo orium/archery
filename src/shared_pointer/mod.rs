@@ -98,6 +98,11 @@ where
     }
 
     #[inline(always)]
+    pub fn as_ptr(this: &Self) -> *const T {
+        unsafe { this.ptr.as_ptr::<T>() }
+    }
+
+    #[inline(always)]
     pub fn try_unwrap(mut this: SharedPointer<T, P>) -> Result<T, SharedPointer<T, P>> {
         let ptr: P = unsafe { ManuallyDrop::take(&mut this.ptr) };
 

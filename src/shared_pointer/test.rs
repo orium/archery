@@ -16,6 +16,16 @@ use std::string::ToString;
 assert_impl_all!(SharedPointer<i32, ArcK>: Send, Sync);
 
 #[test]
+fn test_as_ptr() {
+    let x = SharedPointer::<&'static str, RcK>::new("hello");
+    let y = SharedPointer::clone(&x);
+    let x_ptr: *const &'static str = SharedPointer::as_ptr(&x);
+
+    assert_eq!(x_ptr, SharedPointer::as_ptr(&y));
+    assert_eq!(unsafe { *x_ptr }, "hello");
+}
+
+#[test]
 fn test_deref() {
     let ptr_42: SharedPointer<i32, RcK> = SharedPointer::new(42);
     let ptr_box_dyn_hello: SharedPointer<Box<dyn ToString>, RcK> =

@@ -73,6 +73,11 @@ impl SharedPointerKind for RcK {
     }
 
     #[inline(always)]
+    unsafe fn as_ptr<T>(&self) -> *const T {
+        Rc::as_ptr(self.as_inner_ref())
+    }
+
+    #[inline(always)]
     unsafe fn deref<T>(&self) -> &T {
         self.as_inner_ref::<T>().as_ref()
     }

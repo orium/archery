@@ -21,6 +21,19 @@ fn test_from_box_t() {
 }
 
 #[test]
+fn test_as_ptr() {
+    let x = PointerKind::new::<&'static str>("hello");
+
+    unsafe {
+        let y = PointerKind::clone::<&'static str>(&x);
+        let x_ptr: *const &'static str = PointerKind::as_ptr(&x);
+
+        assert_eq!(x_ptr, PointerKind::as_ptr(&y));
+        assert_eq!(*x_ptr, "hello");
+    }
+}
+
+#[test]
 fn test_deref() {
     let mut ptr_42 = PointerKind::new::<i32>(42);
     let mut ptr_box_dyn_hello = PointerKind::new::<Box<dyn ToString>>(Box::new("hello"));

@@ -23,6 +23,7 @@ use core::fmt::Debug;
 pub trait SharedPointerKind: Sized + Debug {
     fn new<T>(v: T) -> Self;
     fn from_box<T>(v: Box<T>) -> Self;
+    unsafe fn as_ptr<T>(&self) -> *const T;
     unsafe fn deref<T>(&self) -> &T;
     unsafe fn try_unwrap<T>(self) -> Result<T, Self>;
     unsafe fn get_mut<T>(&mut self) -> Option<&mut T>;

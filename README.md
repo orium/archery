@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/orium/archery.svg?branch=master)](https://travis-ci.org/orium/archery)
+[![Build Status](https://github.com/orium/archery/workflows/CI/badge.svg)](https://github.com/orium/archery/actions?query=workflow%3ACI)
 [![Code Coverage](https://codecov.io/gh/orium/archery/branch/master/graph/badge.svg)](https://codecov.io/gh/orium/archery)
 [![Dependency status](https://deps.rs/repo/github/orium/archery/status.svg)](https://deps.rs/repo/github/orium/archery)
 [![crates.io](https://img.shields.io/crates/v/archery.svg)](https://crates.io/crates/archery)

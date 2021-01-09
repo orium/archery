@@ -22,16 +22,17 @@ use core::ptr;
 /// Pointer to shared data with reference-counting.
 ///
 /// The type parameter `P` is a [type constructor](https://en.wikipedia.org/wiki/Type_constructor)
-/// of the underlying pointer type, offering a way to abstraction over [`Rc`](alloc::rc::Rc) and
-/// [`Arc`](alloc::sync::Arc) smart pointers.
+/// of the underlying pointer type, offering a way to abstraction over
+/// [`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) and
+/// [`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) smart pointers.
 /// This allows you to create data structures where the pointer type is parameterizable, so you can
-/// [avoid the overhead of `Arc`](alloc::sync::Arc#thread-safety)
+/// [avoid the overhead of `Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
 /// when you don’t need to share data across threads.
 ///
 /// # Example
 ///
 /// Declare a data structure with the pointer kind as a type parameter bounded by
-/// [`SharedPointerKind`]:
+/// `SharedPointerKind`:
 ///
 /// ```rust
 /// use archery::*;

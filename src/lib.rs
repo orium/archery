@@ -19,8 +19,8 @@
 //! # Archery
 //!
 //! Archery is a rust library that offers a way to abstraction over
-//! [`Rc`](alloc::rc::Rc) and
-//! [`Arc`](alloc::sync::Arc) smart pointers.
+//! [`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) and
+//! [`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) smart pointers.
 //! This allows you to create data structures where the pointer type is parameterizable, so you can
 //! [avoid the overhead of `Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
 //! when you don’t need to share data across threads.
@@ -46,15 +46,15 @@
 //!
 //! ## Using Archery
 //!
-//! Archery defines a [`SharedPointer`]
-//! that receives the [kind of pointer](SharedPointerKind)
+//! Archery defines a [`SharedPointer`](./shared_pointer/struct.SharedPointer.html)
+//! that receives the [kind of pointer](./shared_pointer/kind/trait.SharedPointerKind.html)
 //! as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
 //! type away.
 //!
 //! ### Example
 //!
 //! Declare a data structure with the pointer kind as a type parameter bounded by
-//! [`SharedPointerKind`]:
+//! `SharedPointerKind`:
 //!
 //! ```rust
 //! use archery::*;
@@ -101,8 +101,9 @@
 //!
 //! ## Limitations
 //!
-//! Currently it is not possible to have unsized types inside a [`SharedPointer`].  As a workaround
-//! you can put the unsized type inside a [`Box`](alloc::boxed::Box).
+//! Currently it is not possible to have unsized types inside a `SharedPointer`.  As a workaround
+//! you can put the unsized type inside a
+//! [`Box`](https://doc.rust-lang.org/std/boxed/struct.Box.html).
 //!
 //! # Alternative approaches
 //!

@@ -8,13 +8,15 @@
 [![License](https://img.shields.io/crates/l/archery.svg)](./LICENSE.md)
 <img src="https://raw.githubusercontent.com/orium/archery/master/images/archery.svg?sanitize=true" width="240" align="right">
 
+<!-- cargo-sync-readme start -->
+
 # Archery
 
 Archery is a rust library that offers a way to abstraction over
-[`Rc`](https://doc.rust-lang.org/std/rc/struct.Rc.html) and
-[`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) smart pointers.
+[`Rc`](https://doc.rust-lang.org/stable/alloc/rc/struct.Rc.html) and
+[`Arc`](https://doc.rust-lang.org/stable/alloc/sync/struct.Arc.html) smart pointers.
 This allows you to create data structures where the pointer type is parameterizable, so you can
-[avoid the overhead of `Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
+[avoid the overhead of `Arc`](https://doc.rust-lang.org/stable/alloc/sync/struct.Arc.html#thread-safety)
 when you don’t need to share data across threads.
 
 In languages that supports
@@ -46,7 +48,7 @@ type away.
 ### Example
 
 Declare a data structure with the pointer kind as a type parameter bounded by
-`SharedPointerKind`:
+[`SharedPointerKind`](https://docs.rs/archery/latest/archery/shared_pointer/kind/trait.SharedPointerKind.html):
 
 ```rust
 use archery::*;
@@ -77,9 +79,9 @@ assert_eq!(*pair.value, 1944);
 
 ## Limitations
 
-Currently it is not possible to have unsized types inside a `SharedPointer`.  As a workaround
-you can put the unsized type inside a
-[`Box`](https://doc.rust-lang.org/std/boxed/struct.Box.html).
+Currently it is not possible to have unsized types inside a
+[`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html).  As a workaround you can put the
+unsized type inside a [`Box`](https://doc.rust-lang.org/stable/alloc/boxed/struct.Box.html).
 
 # Alternative approaches
 
@@ -90,3 +92,5 @@ type-level functions.  This has been suggested
 but offers ugly ergonomics (see
 [here](https://github.com/Marwes/rpds/blob/e482d5abbaa6c876d7c624e497affe7299bbeece/src/sequence/vector/mod.rs#L153)
 and [here](https://github.com/Marwes/rpds/blob/e482d5abbaa6c876d7c624e497affe7299bbeece/src/sequence/vector/mod.rs#L249)).
+
+<!-- cargo-sync-readme end -->

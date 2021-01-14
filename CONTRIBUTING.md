@@ -9,5 +9,3 @@ If you are contributing with a pull request you might want to know about a few s
   `cargo fmt`.
 * [`./tools/codecov.sh`](tools/codecov.sh) — Creates a code coverage report.  There is not a strict code coverage
   threshold, but we do want pretty much everything tested.
-* [`./tools/update-readme.sh`](tools/update-readme.sh) — The [`README.md`](README.md) is auto-generated based on the
-  crate’s documentation in [`src/lib.rs`](src/lib.rs).  To update it run this script.

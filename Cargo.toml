@@ -44,7 +44,7 @@ static_assertions = "1"
 
 [dev-dependencies]
 criterion = "0.3"
-pretty_assertions = "0.6"
+pretty_assertions = "0.7"
 compiletest_rs = { version = "0.6", features = [ "tmp" ] }
 
 [features]

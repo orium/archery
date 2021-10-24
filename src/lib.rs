@@ -9,12 +9,15 @@
 #![warn(clippy::pedantic)]
 #![allow(clippy::match_bool)]
 #![allow(clippy::if_not_else)]
-#![allow(clippy::stutter)]
+#![allow(clippy::module_name_repetitions)]
 #![allow(clippy::similar_names)]
 #![allow(clippy::use_self)]
 #![allow(clippy::single_match_else)]
 #![allow(clippy::inline_always)]
 #![allow(clippy::partialeq_ne_impl)]
+#![allow(clippy::missing_errors_doc)]
+#![allow(clippy::explicit_deref_methods)]
+#![allow(clippy::missing_safety_doc)]
 // Note: If you change this remember to update `README.md`.  To do so run `./tools/update-readme.sh`.
 //! # Archery
 //!

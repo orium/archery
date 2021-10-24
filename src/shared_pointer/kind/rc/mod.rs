@@ -41,7 +41,8 @@ impl RcK {
 
     #[inline(always)]
     unsafe fn as_inner_ref<T>(&self) -> &Rc<T> {
-        let rc_t: *const Rc<T> = self.inner.deref() as *const UntypedRc as *const Rc<T>;
+        let rc_t: *const Rc<T> =
+            (self.inner.deref() as *const UntypedRc).cast::<alloc::rc::Rc<T>>();
 
         // Static check to make sure we are not messing up the sizes.
         // This could happen if we allowed for `T` to be unsized, because it would need to be
@@ -55,7 +56,8 @@ impl RcK {
 
     #[inline(always)]
     unsafe fn as_inner_mut<T>(&mut self) -> &mut Rc<T> {
-        let rc_t: *mut Rc<T> = self.inner.deref_mut() as *mut UntypedRc as *mut Rc<T>;
+        let rc_t: *mut Rc<T> =
+            (self.inner.deref_mut() as *mut UntypedRc).cast::<alloc::rc::Rc<T>>();
 
         &mut *rc_t
     }

@@ -41,7 +41,8 @@ impl ArcK {
 
     #[inline(always)]
     unsafe fn as_inner_ref<T>(&self) -> &Arc<T> {
-        let arc_t: *const Arc<T> = self.inner.deref() as *const UntypedArc as *const Arc<T>;
+        let arc_t: *const Arc<T> =
+            (self.inner.deref() as *const UntypedArc).cast::<alloc::sync::Arc<T>>();
 
         // Static check to make sure we are not messing up the sizes.
         // This could happen if we allowed for `T` to be unsized, because it would need to be
@@ -55,7 +56,8 @@ impl ArcK {
 
     #[inline(always)]
     unsafe fn as_inner_mut<T>(&mut self) -> &mut Arc<T> {
-        let arc_t: *mut Arc<T> = self.inner.deref_mut() as *mut UntypedArc as *mut Arc<T>;
+        let arc_t: *mut Arc<T> =
+            (self.inner.deref_mut() as *mut UntypedArc).cast::<alloc::sync::Arc<T>>();
 
         &mut *arc_t
     }

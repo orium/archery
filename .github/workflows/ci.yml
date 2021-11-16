@@ -41,7 +41,7 @@ jobs:
 
       - name: Install cargo plugins
         run: |
-          cargo install cargo-sync-readme
+          cargo install cargo-rdme
           cargo install cargo-deadlinks
 
       - name: Checkout repository

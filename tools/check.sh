@@ -50,7 +50,7 @@ cargo package --allow-dirty
 echo 'Checking code style:'
 cargo fmt -- --check
 echo 'Checking readme:'
-cargo sync-readme --check
+cargo rdme --check
 
 echo
 echo -e "${GREEN}Everything looks lovely!$NC"

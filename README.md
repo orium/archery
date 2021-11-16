@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/crates/l/archery.svg)](./LICENSE.md)
 <img src="https://raw.githubusercontent.com/orium/archery/master/images/archery.svg?sanitize=true" width="240" align="right">
 
-<!-- cargo-sync-readme start -->
+<!-- cargo-rdme start -->
 
 # Archery
 
@@ -93,4 +93,4 @@ but offers ugly ergonomics (see
 [here](https://github.com/Marwes/rpds/blob/e482d5abbaa6c876d7c624e497affe7299bbeece/src/sequence/vector/mod.rs#L153)
 and [here](https://github.com/Marwes/rpds/blob/e482d5abbaa6c876d7c624e497affe7299bbeece/src/sequence/vector/mod.rs#L249)).
 
-<!-- cargo-sync-readme end -->
+<!-- cargo-rdme end -->

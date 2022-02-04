@@ -33,7 +33,7 @@ cargo test --features fatal-warnings
 echo 'Checking the benchmarks:'
 cargo bench --features fatal-warnings -- --test
 echo 'Checking documentation:'
-cargo doc   --features fatal-warnings --document-private-items
+cargo doc   --features fatal-warnings --no-deps --document-private-items
 
 # Tests for memory safety and memory leaks with miri.
 if [ -z "$MIRI_TOOLCHAIN" ]; then

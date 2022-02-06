@@ -43,6 +43,7 @@ jobs:
         run: |
           cargo install cargo-rdme
           cargo install cargo-deadlinks
+          cargo install cargo-criterion
 
       - name: Checkout repository
         uses: actions/checkout@v2

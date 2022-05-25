@@ -29,6 +29,7 @@ pub trait SharedPointerKind: Sized + Debug {
     unsafe fn get_mut<T>(&mut self) -> Option<&mut T>;
     unsafe fn make_mut<T: Clone>(&mut self) -> &mut T;
     unsafe fn strong_count<T>(&self) -> usize;
+    #[must_use]
     unsafe fn clone<T>(&self) -> Self;
     unsafe fn drop<T>(&mut self);
 }

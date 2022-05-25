@@ -309,7 +309,7 @@ where
 {
     #[inline(always)]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        fmt::Pointer::fmt(&(&**self as *const T), f)
+        fmt::Pointer::fmt(&core::ptr::addr_of!(**self), f)
     }
 }
 

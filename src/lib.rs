@@ -19,8 +19,6 @@
 #![allow(clippy::explicit_deref_methods)]
 #![allow(clippy::missing_safety_doc)]
 // Note: If you change this remember to update `README.md`.  To do so run `./tools/update-readme.sh`.
-//! # Archery
-//!
 //! Archery is a rust library that offers a way to abstraction over
 //! [`Rc`](::alloc::rc::Rc) and
 //! [`Arc`](::alloc::sync::Arc) smart pointers.
@@ -38,7 +36,7 @@
 //! While [other approaches](#alternative-approaches) exist, they seem to always offer poor
 //! ergonomics for the user.
 //!
-//! ## Setup
+//! # Setup
 //!
 //! To use Archery add the following to your `Cargo.toml`:
 //!
@@ -47,14 +45,14 @@
 //! archery = "<version>"
 //! ```
 //!
-//! ## Using Archery
+//! # Using Archery
 //!
 //! Archery defines a [`SharedPointer`](crate::shared_pointer::SharedPointer)
 //! that receives the [kind of pointer](crate::shared_pointer::kind::SharedPointerKind)
 //! as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
 //! type away.
 //!
-//! ### Example
+//! ## Example
 //!
 //! Declare a data structure with the pointer kind as a type parameter bounded by
 //! [`SharedPointerKind`](crate::shared_pointer::kind::SharedPointerKind):
@@ -102,7 +100,7 @@
 //! assert_eq!(*pair.value, 1944);
 //! ```
 //!
-//! ## Limitations
+//! # Limitations
 //!
 //! Currently it is not possible to have unsized types inside a
 //! [`SharedPointer`](crate::shared_pointer::SharedPointer).  As a workaround you can put the

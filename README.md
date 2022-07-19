@@ -8,9 +8,9 @@
 [![License](https://img.shields.io/crates/l/archery.svg)](./LICENSE.md)
 <img src="https://raw.githubusercontent.com/orium/archery/master/images/archery.svg?sanitize=true" width="240" align="right">
 
-<!-- cargo-rdme start -->
-
 # Archery
+
+<!-- cargo-rdme start -->
 
 Archery is a rust library that offers a way to abstraction over
 [`Rc`](https://doc.rust-lang.org/stable/alloc/rc/struct.Rc.html) and
@@ -83,7 +83,7 @@ Currently it is not possible to have unsized types inside a
 [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html).  As a workaround you can put the
 unsized type inside a [`Box`](https://doc.rust-lang.org/stable/alloc/boxed/struct.Box.html).
 
-# Alternative approaches
+## Alternative approaches
 
 An alternative to the approach taken by Archery is to use traits with associated types to encode
 type-level functions.  This has been suggested

@@ -11,7 +11,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   # Miri breaks frequently so we pin it to a specific nightly version.
-  MIRI_TOOLCHAIN: nightly-2021-01-08
+  MIRI_TOOLCHAIN: nightly-2022-07-18
 
 jobs:
   build:

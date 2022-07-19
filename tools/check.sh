@@ -38,7 +38,7 @@ if [ -z "$MIRI_TOOLCHAIN" ]; then
     MIRI_TOOLCHAIN=nightly
 fi
 echo "Testing with miri (with toolchain $MIRI_TOOLCHAIN):"
-echo cargo +$MIRI_TOOLCHAIN miri test
+cargo +$MIRI_TOOLCHAIN miri test
 
 echo 'Checking links:'
 cargo deadlinks

@@ -22,25 +22,32 @@ fn test_from_box_t() {
 
 #[test]
 fn test_as_ptr() {
-    let x = PointerKind::new::<&'static str>("hello");
+    let mut x = PointerKind::new::<&'static str>("hello from test_as_ptr");
 
     unsafe {
-        let y = PointerKind::clone::<&'static str>(&x);
+        let mut y = PointerKind::clone::<&'static str>(&x);
         let x_ptr: *const &'static str = PointerKind::as_ptr(&x);
 
         assert_eq!(x_ptr, PointerKind::as_ptr(&y));
-        assert_eq!(*x_ptr, "hello");
+        assert_eq!(*x_ptr, "hello from test_as_ptr");
+
+        x.drop::<&'static str>();
+        y.drop::<&'static str>();
     }
 }
 
 #[test]
 fn test_deref() {
     let mut ptr_42 = PointerKind::new::<i32>(42);
-    let mut ptr_box_dyn_hello = PointerKind::new::<Box<dyn ToString>>(Box::new("hello"));
+    let mut ptr_box_dyn_hello =
+        PointerKind::new::<Box<dyn ToString>>(Box::new("hello from test_deref"));
 
     unsafe {
         assert_eq!(ptr_42.deref::<i32>(), &42);
-        assert_eq!(ptr_box_dyn_hello.deref::<Box<dyn ToString>>().to_string(), "hello");
+        assert_eq!(
+            ptr_box_dyn_hello.deref::<Box<dyn ToString>>().to_string(),
+            "hello from test_deref"
+        );
 
         ptr_42.drop::<i32>();
         ptr_box_dyn_hello.drop::<Box<dyn ToString>>();

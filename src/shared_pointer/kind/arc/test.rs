@@ -26,14 +26,17 @@ fn test_from_box_t() {
 
 #[test]
 fn test_as_ptr() {
-    let x = PointerKind::new::<&'static str>("hello");
+    let mut x = PointerKind::new::<&'static str>("hello");
 
     unsafe {
-        let y = PointerKind::clone::<&'static str>(&x);
+        let mut y = PointerKind::clone::<&'static str>(&x);
         let x_ptr: *const &'static str = PointerKind::as_ptr(&x);
 
         assert_eq!(x_ptr, PointerKind::as_ptr(&y));
         assert_eq!(*x_ptr, "hello");
+
+        x.drop::<&'static str>();
+        y.drop::<&'static str>();
     }
 }
 

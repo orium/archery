@@ -34,6 +34,7 @@ pub trait SharedPointerKind: Sized + Debug {
     unsafe fn drop<T>(&mut self);
 }
 
+#[cfg(feature = "arc")]
 mod arc;
 mod rc;
 

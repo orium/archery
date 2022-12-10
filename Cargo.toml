@@ -48,7 +48,9 @@ pretty_assertions = "1.2.1"
 compiletest_rs = { version = "0.8.0", features = [ "tmp" ] }
 
 [features]
+default = ["arc"]
 fatal-warnings = []
+arc = []
 
 [[bench]]
 name = "std_rc"
@@ -59,6 +61,7 @@ harness = false
 name = "std_arc"
 path = "benches/std_arc.rs"
 harness = false
+required-features = ["arc"]
 
 [[bench]]
 name = "archery_shared_pointer_rc"
@@ -69,3 +72,4 @@ harness = false
 name = "archery_shared_pointer_arc"
 path = "benches/archery_shared_pointer_arc.rs"
 harness = false
+required-features = ["arc"]

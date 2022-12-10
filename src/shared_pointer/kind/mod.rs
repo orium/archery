@@ -38,6 +38,7 @@ mod arc;
 mod rc;
 
 use alloc::boxed::Box;
+#[cfg(feature = "arc")]
 #[doc(inline)]
 pub use arc::ArcK;
 #[doc(inline)]

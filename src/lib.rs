@@ -128,6 +128,7 @@ pub use shared_pointer::SharedPointer;
 
 pub use shared_pointer::kind::SharedPointerKind;
 
+#[cfg(feature = "arc")]
 #[doc(no_inline)]
 pub use shared_pointer::kind::ArcK;
 #[doc(no_inline)]

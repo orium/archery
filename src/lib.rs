@@ -18,7 +18,7 @@
 #![allow(clippy::missing_errors_doc)]
 #![allow(clippy::explicit_deref_methods)]
 #![allow(clippy::missing_safety_doc)]
-// Note: If you change this remember to update `README.md`.  To do so run `./tools/update-readme.sh`.
+// Note: If you change this remember to update `README.md`.  To do so run `cargo rdme`.
 //! Archery is a rust library that offers a way to abstraction over
 //! [`Rc`](::alloc::rc::Rc) and
 //! [`Arc`](::alloc::sync::Arc) smart pointers.

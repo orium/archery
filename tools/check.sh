@@ -29,7 +29,7 @@ trap on_failure ERR
 echo 'Building:'
 cargo build --features fatal-warnings --all-targets
 echo 'Testing:'
-cargo test --features fatal-warnings --all-targets
+cargo test --features fatal-warnings --all-targets --benches
 echo 'Checking documentation:'
 cargo doc --features fatal-warnings --no-deps --document-private-items
 

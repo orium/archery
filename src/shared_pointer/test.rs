@@ -179,6 +179,7 @@ fn test_hash_pointer_kind_consistent() {
     assert_eq!(hash(&ptr_hello_rc), hash(&ptr_hello_arc));
 }
 
+#[allow(clippy::nonminimal_bool)]
 #[test]
 fn test_eq() {
     let ptr_22: SharedPointer<_, RcK> = SharedPointer::new(22);
@@ -199,7 +200,8 @@ fn test_eq() {
     assert!(!(ptr_22 != ptr_22));
 }
 
-#[allow(clippy::cyclomatic_complexity)]
+#[allow(clippy::cognitive_complexity)]
+#[allow(clippy::nonminimal_bool)]
 #[test]
 fn test_ord() {
     let ptr_22: SharedPointer<_, RcK> = SharedPointer::new(22);
@@ -248,7 +250,7 @@ fn test_ord() {
 
 #[test]
 fn test_default() {
-    let ptr: SharedPointer<i32, RcK> = Default::default();
+    let ptr: SharedPointer<i32, RcK> = SharedPointer::default();
 
     assert_eq!(*ptr, 0);
 }

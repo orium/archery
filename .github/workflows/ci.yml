@@ -14,8 +14,7 @@ env:
   MIRI_TOOLCHAIN: nightly-2022-07-18
 
 jobs:
-  build:
-
+  check:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -23,7 +22,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-      - name: Install rust stable
+      - name: Install rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable

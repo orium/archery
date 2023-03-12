@@ -63,7 +63,7 @@ impl RcK {
     }
 }
 
-impl SharedPointerKind for RcK {
+unsafe impl SharedPointerKind for RcK {
     #[inline(always)]
     fn new<T>(v: T) -> RcK {
         RcK::new_from_inner(Rc::new(v))

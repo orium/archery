@@ -63,7 +63,7 @@ impl ArcK {
     }
 }
 
-impl SharedPointerKind for ArcK {
+unsafe impl SharedPointerKind for ArcK {
     #[inline(always)]
     fn new<T>(v: T) -> ArcK {
         ArcK::new_from_inner(Arc::new(v))

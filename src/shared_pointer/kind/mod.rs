@@ -7,6 +7,24 @@ use core::fmt::Debug;
 
 /// Trait for [type constructors](https://en.wikipedia.org/wiki/Type_constructor) of
 /// reference-counting pointers.
+///
+/// # Safety
+///
+/// `T` may be `!`[`Unpin`], and [`SharedPointer`][1] may be held in a pinned
+/// form ([`Pin`][2]`<SharedPointer<T, Self>>`).
+/// As such, the implementation of this trait must uphold the pinning invariants
+/// for `T` while it's held in `Self`. Specifically, this necessitates the
+/// following:
+///
+/// - `&mut T` is only exposed through the trait methods returning `&mut T`.
+///
+/// - The implementor must not move out the contained `T` unless the semantics
+/// of trait methods demands that.
+///
+/// - [`Self::drop`] drops `T` in place.
+///
+/// [1]: crate::shared_pointer::SharedPointer
+/// [2]: core::pin::Pin
 //
 // There are two conditions for types implementing this trait to be used in a safe way:
 //
@@ -20,7 +38,7 @@ use core::fmt::Debug;
 // `Send + Sync` unless `T: Send + Sync`.  This is holds true for `SharedPointer` since it has a
 // phantom field with `T`, thus the compiler will only make `SharedPointer<T>` implement
 // `Send + Sync` if `T: Send + Sync`.
-pub trait SharedPointerKind: Sized + Debug {
+pub unsafe trait SharedPointerKind: Sized + Debug {
     fn new<T>(v: T) -> Self;
     fn from_box<T>(v: Box<T>) -> Self;
     unsafe fn as_ptr<T>(&self) -> *const T;

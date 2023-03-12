@@ -81,7 +81,11 @@ where
 {
     ptr: ManuallyDrop<P>,
     _phantom_t: PhantomData<T>,
+    _phantom_no_send_sync: PhantomData<*mut ()>,
 }
+
+unsafe impl<T: Sync + Send, P: Send> Send for SharedPointer<T, P> where P: SharedPointerKind {}
+unsafe impl<T: Sync + Send, P: Sync> Sync for SharedPointer<T, P> where P: SharedPointerKind {}
 
 impl<T, P> SharedPointer<T, P>
 where
@@ -89,7 +93,11 @@ where
 {
     #[inline(always)]
     fn new_from_inner(ptr: P) -> SharedPointer<T, P> {
-        SharedPointer { ptr: ManuallyDrop::new(ptr), _phantom_t: PhantomData }
+        SharedPointer {
+            ptr: ManuallyDrop::new(ptr),
+            _phantom_t: PhantomData,
+            _phantom_no_send_sync: PhantomData,
+        }
     }
 
     #[inline(always)]

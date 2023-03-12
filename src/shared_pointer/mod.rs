@@ -83,6 +83,8 @@ where
     _phantom_t: PhantomData<T>,
 }
 
+impl<T, P> Unpin for SharedPointer<T, P> where P: SharedPointerKind {}
+
 impl<T, P> SharedPointer<T, P>
 where
     P: SharedPointerKind,

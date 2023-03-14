@@ -17,6 +17,7 @@ use core::marker::PhantomData;
 use core::mem;
 use core::mem::ManuallyDrop;
 use core::ops::Deref;
+use core::pin::Pin;
 use core::ptr;
 
 /// Pointer to shared data with reference-counting.
@@ -87,6 +88,9 @@ where
 unsafe impl<T: Sync + Send, P: Send> Send for SharedPointer<T, P> where P: SharedPointerKind {}
 unsafe impl<T: Sync + Send, P: Sync> Sync for SharedPointer<T, P> where P: SharedPointerKind {}
 
+impl<T, P> Unpin for SharedPointer<T, P> where P: SharedPointerKind {}
+
+
 impl<T, P> SharedPointer<T, P>
 where
     P: SharedPointerKind,
@@ -103,6 +107,11 @@ where
     #[inline(always)]
     pub fn new(v: T) -> SharedPointer<T, P> {
         SharedPointer::new_from_inner(P::new::<T>(v))
+    }
+
+    #[inline(always)]
+    pub fn pin(v: T) -> Pin<SharedPointer<T, P>> {
+        unsafe { Pin::new_unchecked(Self::new(v)) }
     }
 
     #[inline(always)]

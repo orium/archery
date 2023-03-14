@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.5.0
+
+* Fix `Send`/`Sync` unsoundness in `SharedPointer`.  See issue [#18](https://github.com/orium/archery/issues/18).
+* Added `SharedPointer::pin()`.
+* Added `SharedPointer::as_ptr()`.
+* Updated dependencies.
+* Updated to 2021 edition.
+
 ## 0.4.0
 
 * Added support for `no_std`.

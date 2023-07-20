@@ -1,8 +1,5 @@
-extern crate archery;
-extern crate static_assertions;
-
-use static_assertions::assert_impl_all;
 use archery::*;
+use static_assertions::assert_impl_all;
 
 assert_impl_all!(i32: Send, Sync);
 

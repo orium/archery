@@ -43,9 +43,9 @@ codecov = { repository = "orium/archery", branch = "master", service = "github" 
 static_assertions = "1.1.0"
 
 [dev-dependencies]
-criterion = { version = "0.4.0", features = ["html_reports"] }
+criterion = { version = "0.5.1", features = ["html_reports"] }
 pretty_assertions = "1.2.1"
-compiletest_rs = { version = "0.9.0", features = [ "tmp" ] }
+compiletest_rs = "0.10.2"
 
 [features]
 fatal-warnings = []

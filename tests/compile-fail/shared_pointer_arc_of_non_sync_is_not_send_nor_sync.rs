@@ -1,6 +1,3 @@
-extern crate archery;
-extern crate static_assertions;
-
 use archery::*;
 use static_assertions::assert_impl_all;
 use std::cell::Cell;

@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.0.0
+
+* No changes.  It’s just time to commit to a stable release :).
+
 ## 0.5.0
 
 * Fix `Send`/`Sync` unsoundness in `SharedPointer`.  See issue [#18](https://github.com/orium/archery/issues/18).

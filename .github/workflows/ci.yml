@@ -23,11 +23,8 @@ jobs:
 
     steps:
       - name: Install rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          override: true
-          default: true
           components: rustfmt, rust-src
 
       - name: Install miri
@@ -45,7 +42,7 @@ jobs:
           cargo install cargo-criterion
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
@@ -64,18 +61,14 @@ jobs:
 
     steps:
       - name: Install rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          default: true
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install cargo plugins
         run: |
           cargo install cargo-msrv
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 2
 

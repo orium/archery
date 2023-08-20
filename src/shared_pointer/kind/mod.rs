@@ -53,10 +53,15 @@ pub unsafe trait SharedPointerKind: Sized + Debug {
 }
 
 mod arc;
+#[cfg(feature = "triomphe")]
+mod arct;
 mod rc;
 
 use alloc::boxed::Box;
 #[doc(inline)]
 pub use arc::ArcK;
+#[cfg(feature = "triomphe")]
+#[doc(inline)]
+pub use arct::ArcTK;
 #[doc(inline)]
 pub use rc::RcK;

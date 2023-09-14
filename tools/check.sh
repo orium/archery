@@ -29,9 +29,14 @@ trap on_failure ERR
 echo 'Building:'
 cargo build --features fatal-warnings --all-targets
 echo 'Testing:'
-cargo test --features fatal-warnings --all-targets --benches
+cargo test  --features fatal-warnings --all-targets --benches
+# Weirdly, the `cargo test ... --all-targets ...` above does not run the tests in the documentation, so we run the
+# doc tests like this.
+# See https://github.com/rust-lang/cargo/issues/6669.
+echo 'Testing doc:'
+cargo test  --features fatal-warnings --doc
 echo 'Checking documentation:'
-cargo doc --features fatal-warnings --no-deps --document-private-items
+cargo doc   --features fatal-warnings --no-deps --document-private-items
 
 # Tests for memory safety and memory leaks with miri.
 if [ -z "$MIRI_TOOLCHAIN" ]; then

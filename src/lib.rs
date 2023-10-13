@@ -18,6 +18,9 @@
 #![allow(clippy::missing_errors_doc)]
 #![allow(clippy::explicit_deref_methods)]
 #![allow(clippy::missing_safety_doc)]
+// TODO This is only needed because `cargo-rdme` requires a path like `crate::⋯`. Once that limitation is
+//      lifted we can remove this.
+#![allow(rustdoc::redundant_explicit_links)]
 // Note: If you change this remember to update `README.md`.  To do so run `cargo rdme`.
 //! Archery is a rust library that offers a way to abstraction over
 //! [`Rc`](::alloc::rc::Rc) and

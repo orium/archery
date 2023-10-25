@@ -41,7 +41,7 @@ codecov = { repository = "orium/archery", branch = "master", service = "github" 
 
 [dependencies]
 static_assertions = "1.1.0"
-triomphe = { version = "0.1.9", optional = true }
+triomphe = { version = "0.1.9", default-features = false, optional = true }
 
 [dev-dependencies]
 criterion = { version = "0.5.1", features = ["html_reports"] }

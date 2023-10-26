@@ -11,9 +11,6 @@ use std::ops::Deref;
 use criterion::{criterion_group, criterion_main, Criterion};
 use std::hint::black_box;
 
-#[cfg(feature = "triomphe")]
-use archery::ArcTK as ArcK;
-
 fn archery_shared_pointer_arc_deref(c: &mut Criterion) {
     let limit = 200_000;
 
@@ -44,5 +41,5 @@ fn archery_shared_pointer_arc_clone(c: &mut Criterion) {
     });
 }
 
-criterion_group!(benches, archery_shared_pointer_arc_deref, archery_shared_pointer_arc_clone,);
+criterion_group!(benches, archery_shared_pointer_arc_deref, archery_shared_pointer_arc_clone);
 criterion_main!(benches);

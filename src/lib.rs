@@ -133,5 +133,8 @@ pub use shared_pointer::kind::SharedPointerKind;
 
 #[doc(no_inline)]
 pub use shared_pointer::kind::ArcK;
+#[cfg(feature = "triomphe")]
+#[doc(no_inline)]
+pub use shared_pointer::kind::ArcTK;
 #[doc(no_inline)]
 pub use shared_pointer::kind::RcK;

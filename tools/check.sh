@@ -27,23 +27,23 @@ assert_installed "cargo-miri"
 trap on_failure ERR
 
 echo 'Building:'
-cargo build --features fatal-warnings --all-targets
+cargo build --all-features --all-targets
 echo 'Testing:'
-cargo test  --features fatal-warnings --all-targets --benches
+cargo test  --all-features --all-targets --benches
 # Weirdly, the `cargo test ... --all-targets ...` above does not run the tests in the documentation, so we run the
 # doc tests like this.
 # See https://github.com/rust-lang/cargo/issues/6669.
 echo 'Testing doc:'
-cargo test  --features fatal-warnings --doc
+cargo test  --all-features --doc
 echo 'Checking documentation:'
-cargo doc   --features fatal-warnings --no-deps --document-private-items
+cargo doc   --all-features --no-deps --document-private-items
 
 # Tests for memory safety and memory leaks with miri.
 if [ -z "$MIRI_TOOLCHAIN" ]; then
     MIRI_TOOLCHAIN=nightly
 fi
 echo "Testing with miri (with toolchain $MIRI_TOOLCHAIN):"
-cargo +$MIRI_TOOLCHAIN miri test
+cargo +$MIRI_TOOLCHAIN miri test --all-features
 
 echo 'Checking links:'
 cargo deadlinks

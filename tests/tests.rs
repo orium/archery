@@ -1,4 +1,5 @@
 #![cfg_attr(feature = "fatal-warnings", deny(warnings))]
+#![cfg(not(miri))]
 
 extern crate compiletest_rs as compiletest;
 
@@ -35,7 +36,6 @@ fn rustc_flags(dependency_path: &str, dependencies: &[&str]) -> String {
     flags
 }
 
-#[cfg(not(miri))]
 #[test]
 fn compile_tests() {
     use compiletest::common::Mode;

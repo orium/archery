@@ -71,3 +71,9 @@ harness = false
 name = "archery_shared_pointer_arc"
 path = "benches/archery_shared_pointer_arc.rs"
 harness = false
+
+[[bench]]
+name = "archery_shared_pointer_arct"
+path = "benches/archery_shared_pointer_arct.rs"
+harness = false
+required-features = ["triomphe"]

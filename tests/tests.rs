@@ -27,8 +27,7 @@ fn rustc_flags(dependency_path: &str, dependencies: &[&str]) -> String {
     let mut flags = format!("--edition=2021 -L dependency={} ", dependency_path);
 
     for dep in dependencies {
-        let rlib_path =
-            find_rlib(dependency_path, dbg!(dep)).expect("io error").expect("rlib not found");
+        let rlib_path = find_rlib(dependency_path, dep).expect("io error").expect("rlib not found");
 
         flags.push_str(&format!("--extern {}={} ", dep, rlib_path.display()));
     }

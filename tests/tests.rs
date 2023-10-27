@@ -3,9 +3,9 @@
 
 extern crate compiletest_rs as compiletest;
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
-fn find_rlib(dependency_path: &str, dependency_name: &str) -> std::io::Result<Option<PathBuf>> {
+fn find_rlib(dependency_path: &Path, dependency_name: &str) -> std::io::Result<Option<PathBuf>> {
     use std::fs::read_dir;
 
     for entry in read_dir(dependency_path)? {
@@ -23,8 +23,8 @@ fn find_rlib(dependency_path: &str, dependency_name: &str) -> std::io::Result<Op
     Ok(None)
 }
 
-fn rustc_flags(dependency_path: &str, dependencies: &[&str]) -> String {
-    let mut flags = format!("--edition=2021 -L dependency={} ", dependency_path);
+fn rustc_flags(dependency_path: &Path, dependencies: &[&str]) -> String {
+    let mut flags = format!("--edition=2021 -L dependency={} ", dependency_path.display());
 
     for dep in dependencies {
         let rlib_path = find_rlib(dependency_path, dep).expect("io error").expect("rlib not found");
@@ -33,6 +33,14 @@ fn rustc_flags(dependency_path: &str, dependencies: &[&str]) -> String {
     }
 
     flags
+}
+
+fn dependency_path() -> PathBuf {
+    std::env::args()
+        .next()
+        .map(PathBuf::from)
+        .and_then(|p| p.parent().map(ToOwned::to_owned))
+        .expect("could not find dependency path")
 }
 
 #[test]
@@ -48,7 +56,7 @@ fn compile_tests() {
 
     let dependencies = ["archery", "static_assertions"];
 
-    config.target_rustcflags = Some(rustc_flags("target/debug/deps/", &dependencies));
+    config.target_rustcflags = Some(rustc_flags(&dependency_path(), &dependencies));
 
     compiletest::run_tests(&config);
 }

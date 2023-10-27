@@ -36,7 +36,8 @@ done
 
 # TODO it seems the `--force-clean` is not working.
 cargo clean
-cargo tarpaulin --force-clean --ignore-panics --engine llvm --timeout 1200 --out $output_format --all-features
+cargo tarpaulin --force-clean --ignore-panics --engine llvm --timeout 1200 --out $output_format \
+    --run-types Lib --all-features
 
 if [ "$output_format" == "html" ]; then
     echo

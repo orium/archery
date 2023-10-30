@@ -37,7 +37,7 @@ include = [
 ]
 
 [badges]
-codecov = { repository = "orium/archery", branch = "master", service = "github" }
+codecov = { repository = "orium/archery", branch = "main", service = "github" }
 
 [dependencies]
 static_assertions = "1.1.0"

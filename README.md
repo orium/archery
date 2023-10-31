@@ -77,6 +77,17 @@ let pair: KeyValuePair<_, _, RcK> =
 assert_eq!(*pair.value, 1944);
 ```
 
+### `triomphe::Arc`
+
+You can also use [`triomphe::Arc`](https://docs.rs/triomphe/latest/triomphe/struct.Arc.html)
+as the backing implementation of a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html).
+This is generally faster than [`std::sync::Arc`](https://doc.rust-lang.org/stable/alloc/sync/struct.Arc.html).
+Read [`triomphe`’s crate documentation](https://docs.rs/triomphe/latest/triomphe/) to learn more
+about it.
+
+To use it you need to enable the `triomphe` feature in `archery`. Use `ArcTK` as the pointer
+kind in [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html).
+
 ## Limitations
 
 Currently it is not possible to have unsized types inside a

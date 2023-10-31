@@ -185,7 +185,7 @@ fn test_clone() {
 fn test_debug() {
     let mut ptr = PointerKind::new::<i32>(42);
 
-    assert_eq!(format!("{:?}", ptr), "RcK");
+    assert_eq!(format!("{ptr:?}"), "RcK");
 
     unsafe {
         ptr.drop::<i32>();

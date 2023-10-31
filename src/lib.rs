@@ -103,6 +103,17 @@
 //! assert_eq!(*pair.value, 1944);
 //! ```
 //!
+//! ## `triomphe::Arc`
+//!
+//! You can also use [`triomphe::Arc`](https://docs.rs/triomphe/latest/triomphe/struct.Arc.html)
+//! as the backing implementation of a [`SharedPointer`](crate::shared_pointer::SharedPointer).
+//! This is generally faster than [`std::sync::Arc`](::alloc::sync::Arc).
+//! Read [`triomphe`’s crate documentation](https://docs.rs/triomphe/latest/triomphe/) to learn more
+//! about it.
+//!
+//! To use it you need to enable the `triomphe` feature in `archery`. Use `ArcTK` as the pointer
+//! kind in [`SharedPointer`](crate::shared_pointer::SharedPointer).
+//!
 //! # Limitations
 //!
 //! Currently it is not possible to have unsized types inside a

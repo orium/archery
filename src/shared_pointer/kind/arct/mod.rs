@@ -18,7 +18,7 @@ use triomphe::Arc;
 type UntypedArc = Arc<()>;
 
 /// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
-/// [`Arc`] pointers.
+/// [`triomphe::Arc`](triomphe::Arc) pointers.
 pub struct ArcTK {
     /// We use [`ManuallyDrop`] here, so that we can drop it explicitly as
     /// [`Arc<T>`](triomphe::Arc).  Not sure if it can be dropped as [`UntypedArc`], but it

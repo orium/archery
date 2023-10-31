@@ -273,7 +273,7 @@ fn test_from_t() {
 fn test_debug() {
     let ptr: SharedPointer<_, RcK> = SharedPointer::new([1, 2, 3]);
 
-    assert_eq!(format!("{:?}", ptr), "[1, 2, 3]");
+    assert_eq!(format!("{ptr:?}"), "[1, 2, 3]");
 }
 
 #[cfg(not(miri))] // Miri doesn't like this one.
@@ -281,12 +281,12 @@ fn test_debug() {
 fn test_fmt_pointer() {
     let ptr: SharedPointer<_, RcK> = SharedPointer::new(314);
 
-    assert_eq!(format!("{:p}", ptr), format!("{:p}", ptr.deref() as *const i32));
+    assert_eq!(format!("{ptr:p}"), format!("{:p}", ptr.deref() as *const i32));
 }
 
 #[test]
 fn test_display() {
     let ptr: SharedPointer<_, RcK> = SharedPointer::new("hello");
 
-    assert_eq!(format!("{}", ptr), "hello");
+    assert_eq!(format!("{ptr}"), "hello");
 }

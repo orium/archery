@@ -49,14 +49,15 @@ fn compile_tests() {
     use compiletest::Config;
     use std::path::PathBuf;
 
-    let mut config: Config = Config::default();
-
-    config.mode = Mode::CompileFail;
-    config.src_base = PathBuf::from("tests/compile-fail");
-
     let dependencies = ["archery", "static_assertions"];
+    let target_rustcflags = rustc_flags(&dependency_path(), &dependencies);
 
-    config.target_rustcflags = Some(rustc_flags(&dependency_path(), &dependencies));
+    let config: Config = Config {
+        mode: Mode::CompileFail,
+        src_base: PathBuf::from("tests/compile-fail"),
+        target_rustcflags: Some(target_rustcflags),
+        ..Default::default()
+    };
 
     compiletest::run_tests(&config);
 }

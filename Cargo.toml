@@ -77,3 +77,6 @@ name = "archery_shared_pointer_arct"
 path = "benches/archery_shared_pointer_arct.rs"
 harness = false
 required-features = ["triomphe"]
+
+[package.metadata.docs.rs]
+features = ["triomphe"]

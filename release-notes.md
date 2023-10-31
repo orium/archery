@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.1.0
+
+* Added support for `triomphe::Arc` as a pointer kind. This gated behind the `triomphe` feature.
+
 ## 1.0.0
 
 * No changes.  It’s just time to commit to a stable release :).

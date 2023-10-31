@@ -8,11 +8,11 @@
 [![License](https://img.shields.io/crates/l/archery.svg)](./LICENSE.md)
 <img src="https://raw.githubusercontent.com/orium/archery/master/images/archery.svg?sanitize=true" width="240" align="right">
 
-# Archery
+# `archery`
 
 <!-- cargo-rdme start -->
 
-Archery is a rust library that offers a way to abstraction over
+`archery` is a rust library that offers a way to abstraction over
 [`Rc`](https://doc.rust-lang.org/stable/alloc/rc/struct.Rc.html) and
 [`Arc`](https://doc.rust-lang.org/stable/alloc/sync/struct.Arc.html) smart pointers.
 This allows you to create data structures where the pointer type is parameterizable, so you can
@@ -23,7 +23,7 @@ In languages that supports
 [higher-kinded polymorphism](https://en.wikipedia.org/wiki/Type_class#Higher-kinded_polymorphism)
 this would be simple to achieve without any library, but
 [rust does not support that yet](https://github.com/rust-lang/rfcs/issues/324).
-To mimic higher-kinded polymorphism Archery implements the approach suggested by
+To mimic higher-kinded polymorphism `archery` implements the approach suggested by
 Joshua Liebow-Feeser in
 “[Rust has higher kinded types already… sort of](https://joshlf.com/post/2018/10/18/rust-higher-kinded-types-already/)”.
 While [other approaches](#alternative-approaches) exist, they seem to always offer poor
@@ -31,16 +31,16 @@ ergonomics for the user.
 
 ## Setup
 
-To use Archery add the following to your `Cargo.toml`:
+To use `archery` add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 archery = "<version>"
 ```
 
-## Using Archery
+## Using `archery`
 
-Archery defines a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html)
+`archery` defines a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html)
 that receives the [kind of pointer](https://docs.rs/archery/latest/archery/shared_pointer/kind/trait.SharedPointerKind.html)
 as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
 type away.
@@ -96,7 +96,7 @@ unsized type inside a [`Box`](https://doc.rust-lang.org/stable/alloc/boxed/struc
 
 ## Alternative approaches
 
-An alternative to the approach taken by Archery is to use traits with associated types to encode
+An alternative to the approach taken by `archery` is to use traits with associated types to encode
 type-level functions.  This has been suggested
 [multiple](https://github.com/orium/rpds/issues/7#issuecomment-362635901)
 [times](https://joshlf.com/post/2018/10/18/rust-higher-kinded-types-already/#comment-4160863400),

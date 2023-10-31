@@ -22,7 +22,7 @@
 //      lifted we can remove this.
 #![allow(rustdoc::redundant_explicit_links)]
 // Note: If you change this remember to update `README.md`.  To do so run `cargo rdme`.
-//! Archery is a rust library that offers a way to abstraction over
+//! `archery` is a rust library that offers a way to abstraction over
 //! [`Rc`](::alloc::rc::Rc) and
 //! [`Arc`](::alloc::sync::Arc) smart pointers.
 //! This allows you to create data structures where the pointer type is parameterizable, so you can
@@ -33,7 +33,7 @@
 //! [higher-kinded polymorphism](https://en.wikipedia.org/wiki/Type_class#Higher-kinded_polymorphism)
 //! this would be simple to achieve without any library, but
 //! [rust does not support that yet](https://github.com/rust-lang/rfcs/issues/324).
-//! To mimic higher-kinded polymorphism Archery implements the approach suggested by
+//! To mimic higher-kinded polymorphism `archery` implements the approach suggested by
 //! Joshua Liebow-Feeser in
 //! “[Rust has higher kinded types already… sort of](https://joshlf.com/post/2018/10/18/rust-higher-kinded-types-already/)”.
 //! While [other approaches](#alternative-approaches) exist, they seem to always offer poor
@@ -41,16 +41,16 @@
 //!
 //! # Setup
 //!
-//! To use Archery add the following to your `Cargo.toml`:
+//! To use `archery` add the following to your `Cargo.toml`:
 //!
 //! ```toml
 //! [dependencies]
 //! archery = "<version>"
 //! ```
 //!
-//! # Using Archery
+//! # Using `archery`
 //!
-//! Archery defines a [`SharedPointer`](crate::shared_pointer::SharedPointer)
+//! `archery` defines a [`SharedPointer`](crate::shared_pointer::SharedPointer)
 //! that receives the [kind of pointer](crate::shared_pointer::kind::SharedPointerKind)
 //! as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
 //! type away.
@@ -122,7 +122,7 @@
 //!
 //! # Alternative approaches
 //!
-//! An alternative to the approach taken by Archery is to use traits with associated types to encode
+//! An alternative to the approach taken by `archery` is to use traits with associated types to encode
 //! type-level functions.  This has been suggested
 //! [multiple](https://github.com/orium/rpds/issues/7#issuecomment-362635901)
 //! [times](https://joshlf.com/post/2018/10/18/rust-higher-kinded-types-already/#comment-4160863400),

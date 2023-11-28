@@ -52,6 +52,29 @@ compiletest_rs = "0.10.2"
 fatal-warnings = []
 triomphe = ["dep:triomphe"]
 
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+correctness = "deny"
+
+explicit-deref-methods = "allow"
+if-not-else = "allow"
+inline-always = "allow"
+match-bool = "allow"
+missing-errors-doc = "allow"
+missing-safety-doc = "allow"
+module-name-repetitions = "allow"
+partialeq-ne-impl = "allow"
+similar-names = "allow"
+single-match-else = "allow"
+use-self = "allow"
+wildcard-imports = "allow"
+
+[lints.rustdoc]
+# TODO This is only needed because `cargo-rdme` requires a path like `crate::⋯`. Once that limitation is lifted we
+#      can remove this.
+redundant-explicit-links = "allow"
+
 [[bench]]
 name = "std_rc"
 path = "benches/std_rc.rs"

@@ -23,7 +23,7 @@ fn std_arc_deref(c: &mut Criterion) {
             }
 
             rc
-        })
+        });
     });
 }
 
@@ -37,7 +37,7 @@ fn std_arc_clone(c: &mut Criterion) {
                 vec.resize(limit, Arc::new(42));
                 vec
             },
-        )
+        );
     });
 }
 

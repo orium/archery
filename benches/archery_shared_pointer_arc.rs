@@ -23,7 +23,7 @@ fn archery_shared_pointer_arc_deref(c: &mut Criterion) {
             }
 
             rc
-        })
+        });
     });
 }
 
@@ -37,7 +37,7 @@ fn archery_shared_pointer_arc_clone(c: &mut Criterion) {
                 vec.resize(limit, SharedPointer::<_, ArcK>::new(42));
                 vec
             },
-        )
+        );
     });
 }
 

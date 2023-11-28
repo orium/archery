@@ -23,7 +23,7 @@ fn std_rc_deref(c: &mut Criterion) {
             }
 
             rc
-        })
+        });
     });
 }
 
@@ -37,7 +37,7 @@ fn std_rc_clone_and_drop(c: &mut Criterion) {
                 vec.resize(limit, Rc::new(42));
                 vec
             },
-        )
+        );
     });
 }
 

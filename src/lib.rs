@@ -5,22 +5,6 @@
 
 #![no_std]
 #![cfg_attr(feature = "fatal-warnings", deny(warnings))]
-#![deny(clippy::correctness)]
-#![warn(clippy::pedantic)]
-#![allow(clippy::match_bool)]
-#![allow(clippy::if_not_else)]
-#![allow(clippy::module_name_repetitions)]
-#![allow(clippy::similar_names)]
-#![allow(clippy::use_self)]
-#![allow(clippy::single_match_else)]
-#![allow(clippy::inline_always)]
-#![allow(clippy::partialeq_ne_impl)]
-#![allow(clippy::missing_errors_doc)]
-#![allow(clippy::explicit_deref_methods)]
-#![allow(clippy::missing_safety_doc)]
-// TODO This is only needed because `cargo-rdme` requires a path like `crate::⋯`. Once that limitation is
-//      lifted we can remove this.
-#![allow(rustdoc::redundant_explicit_links)]
 // Note: If you change this remember to update `README.md`.  To do so run `cargo rdme`.
 //! `archery` is a rust library that offers a way to abstraction over
 //! [`Rc`](::alloc::rc::Rc) and

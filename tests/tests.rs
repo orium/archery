@@ -5,6 +5,7 @@ extern crate compiletest_rs as compiletest;
 
 use std::path::{Path, PathBuf};
 
+#[allow(clippy::case_sensitive_file_extension_comparisons)]
 fn find_rlib(dependency_path: &Path, dependency_name: &str) -> std::io::Result<Option<PathBuf>> {
     use std::fs::read_dir;
 
@@ -12,8 +13,7 @@ fn find_rlib(dependency_path: &Path, dependency_name: &str) -> std::io::Result<O
         let entry = entry?;
 
         if let Some(filename) = entry.path().file_name().and_then(|f| f.to_str()) {
-            if filename.starts_with(&format!("lib{}", dependency_name))
-                && filename.ends_with(".rlib")
+            if filename.starts_with(&format!("lib{dependency_name}")) && filename.ends_with(".rlib")
             {
                 return Ok(Some(entry.path()));
             }

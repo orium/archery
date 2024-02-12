@@ -11,7 +11,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   # Miri breaks frequently, so we pin it to a specific nightly version.
-  MIRI_TOOLCHAIN: nightly-2023-09-02
+  MIRI_TOOLCHAIN: nightly-2024-02-11
 
 jobs:
   check:
@@ -22,18 +22,16 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
+      - name: Install miri
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.MIRI_TOOLCHAIN }}
+          components: miri, rust-src
+
       - name: Install rust
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, rust-src
-
-      - name: Install miri
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ env.MIRI_TOOLCHAIN }}
-          override: false
-          default: false
-          components: miri, rust-src
 
       - name: Install cargo plugins
         run: |
@@ -42,9 +40,7 @@ jobs:
           cargo install cargo-criterion
 
       - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
+        uses: actions/checkout@v4
 
       - name: Check everything
         run: bash ./tools/check.sh
@@ -64,13 +60,10 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install cargo plugins
-        run: |
-          cargo install cargo-msrv
+        run: cargo install cargo-msrv
 
       - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
+        uses: actions/checkout@v4
 
       - name: Check the minimum supported rust version
         run: cargo msrv verify

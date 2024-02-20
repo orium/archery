@@ -354,5 +354,34 @@ where
 
 pub mod kind;
 
+#[cfg(feature = "serde")]
+pub mod serde {
+    use super::*;
+    use ::serde::de::{Deserialize, Deserializer};
+    use ::serde::ser::{Serialize, Serializer};
+
+    impl<T, P> Serialize for SharedPointer<T, P>
+    where
+        T: Serialize,
+        P: SharedPointerKind,
+    {
+        fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+            self.as_ref().serialize(serializer)
+        }
+    }
+
+    impl<'de, T, P> Deserialize<'de> for SharedPointer<T, P>
+    where
+        T: Deserialize<'de>,
+        P: SharedPointerKind,
+    {
+        fn deserialize<D: Deserializer<'de>>(
+            deserializer: D,
+        ) -> Result<SharedPointer<T, P>, D::Error> {
+            T::deserialize(deserializer).map(SharedPointer::new)
+        }
+    }
+}
+
 #[cfg(test)]
 mod test;

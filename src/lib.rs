@@ -98,6 +98,15 @@
 //! To use it you need to enable the `triomphe` feature in `archery`. Use `ArcTK` as the pointer
 //! kind in [`SharedPointer`](crate::shared_pointer::SharedPointer).
 //!
+//! ## Serialization
+//!
+//! We support serialization through [serde](https://crates.io/crates/serde).  To use it
+//! enable the `serde` feature.  To do so change the archery dependency in your `Cargo.toml` to
+//!
+//! ```toml
+//! [dependencies]
+//! archery = { version = "<version>", features = ["serde"] }
+//! ```
 //! # Limitations
 //!
 //! Currently it is not possible to have unsized types inside a

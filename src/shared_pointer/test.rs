@@ -290,3 +290,14 @@ fn test_display() {
 
     assert_eq!(format!("{ptr}"), "hello");
 }
+
+#[cfg(feature = "serde")]
+#[test]
+fn test_serde() {
+    use bincode::{deserialize, serialize};
+    let ptr: SharedPointer<_, RcK> = SharedPointer::new("hello");
+    let encoded = serialize(&ptr).unwrap();
+    let decoded: SharedPointer<_, RcK> = deserialize(&encoded).unwrap();
+
+    pretty_assertions::assert_eq!(ptr, decoded);
+}

@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.0
+
+* Added support for serde. This gated behind the `serde` feature.
+
 ## 1.1.0
 
 * Added support for `triomphe::Arc` as a pointer kind. This gated behind the `triomphe` feature.

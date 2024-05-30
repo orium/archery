@@ -23,6 +23,7 @@ function on_failure {
 assert_installed "cargo-deadlinks"
 assert_installed "cargo-fmt"
 assert_installed "cargo-miri"
+assert_installed "cargo-rdme"
 
 trap on_failure ERR
 

@@ -78,6 +78,11 @@ wildcard-imports = "allow"
 #      can remove this.
 redundant-explicit-links = "allow"
 
+[lib]
+# Disable libtest to make sure criterion can parse the command line flags.
+# See https://bheisler.github.io/criterion.rs/book/faq.html and https://github.com/rust-lang/rust/issues/47241.
+bench = false
+
 [[bench]]
 name = "std_rc"
 path = "benches/std_rc.rs"

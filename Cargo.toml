@@ -41,13 +41,13 @@ codecov = { repository = "orium/archery", branch = "main", service = "github" }
 
 [dependencies]
 static_assertions = "1.1.0"
-triomphe = { version = "0.1.9", optional = true, default-features = false }
-serde = { version = "1.0.197", optional = true, default-features = false }
+triomphe = { version = "0.1.13", optional = true, default-features = false }
+serde = { version = "1.0.204", optional = true, default-features = false }
 
 [dev-dependencies]
 criterion = { version = "0.5.1", features = ["html_reports"] }
-pretty_assertions = "1.2.1"
-compiletest_rs = "0.10.2"
+pretty_assertions = "1.4.0"
+compiletest_rs = "0.11.0"
 bincode = "1.3.3"
 
 [features]

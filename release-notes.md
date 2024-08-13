@@ -1,8 +1,12 @@
 # Release notes
 
+## 1.2.1
+
+* No longer depend on `static_assertions`.
+
 ## 1.2.0
 
-* Added support for serde. This gated behind the `serde` feature.
+* Added support for serde. This is gated behind the `serde` feature.
 
 ## 1.1.0
 

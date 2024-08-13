@@ -29,7 +29,7 @@ pub struct ArcK {
 impl ArcK {
     #[inline(always)]
     fn new_from_inner<T>(arc: Arc<T>) -> ArcK {
-        ArcK { inner: ManuallyDrop::new(unsafe { mem::transmute(arc) }) }
+        ArcK { inner: ManuallyDrop::new(unsafe { mem::transmute::<Arc<T>, UntypedArc>(arc) }) }
     }
 
     #[inline(always)]

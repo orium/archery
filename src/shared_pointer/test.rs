@@ -15,6 +15,52 @@ use std::string::ToString;
 
 assert_impl_all!(SharedPointer<i32, ArcK>: Send, Sync);
 
+mod static_check_rc_is_not_send_nor_sync {
+    use crate::{RcK, SharedPointer};
+    use static_assertions::*;
+
+    assert_impl_all!(i32: Send, Sync);
+
+    assert_not_impl_any!(SharedPointer<i32, RcK>: Send);
+    assert_not_impl_any!(SharedPointer<i32, RcK>: Sync);
+}
+
+mod static_check_arc_of_non_send_is_not_send_nor_sync {
+    use crate::{ArcK, SharedPointer};
+    use static_assertions::*;
+    use std::sync::MutexGuard;
+
+    assert_not_impl_any!(MutexGuard<'static, ()>: Send);
+    assert_impl_all!(MutexGuard<'static, ()>: Sync);
+
+    assert_not_impl_any!(SharedPointer<MutexGuard<'static, ()>, ArcK>: Send);
+    assert_not_impl_any!(SharedPointer<MutexGuard<'static, ()>, ArcK>: Sync);
+}
+
+mod static_check_arc_of_non_sync_is_not_send_nor_sync {
+    use crate::{ArcK, SharedPointer};
+    use static_assertions::*;
+    use std::cell::Cell;
+
+    assert_impl_all!(Cell<()>: Send);
+    assert_not_impl_any!(Cell<()>: Sync);
+
+    assert_not_impl_any!(SharedPointer<Cell<()>, ArcK>: Send);
+    assert_not_impl_any!(SharedPointer<Cell<()>, ArcK>: Sync);
+}
+
+mod static_check_arc_of_non_send_nor_sync_is_not_send_nor_sync {
+    use crate::{ArcK, SharedPointer};
+    use alloc::rc::Rc;
+    use static_assertions::*;
+
+    assert_not_impl_any!(Rc<i32>: Send);
+    assert_not_impl_any!(Rc<i32>: Sync);
+
+    assert_not_impl_any!(SharedPointer<Rc<i32>, ArcK>: Send);
+    assert_not_impl_any!(SharedPointer<Rc<i32>, ArcK>: Sync);
+}
+
 #[test]
 fn test_as_ptr() {
     let x = SharedPointer::<&'static str, RcK>::new("hello");

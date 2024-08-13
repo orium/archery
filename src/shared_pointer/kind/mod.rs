@@ -19,7 +19,7 @@ use core::fmt::Debug;
 /// - `&mut T` is only exposed through the trait methods returning `&mut T`.
 ///
 /// - The implementor must not move out the contained `T` unless the semantics
-/// of trait methods demands that.
+///   of trait methods demands that.
 ///
 /// - [`Self::drop`] drops `T` in place.
 ///

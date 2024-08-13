@@ -29,7 +29,7 @@ pub struct RcK {
 impl RcK {
     #[inline(always)]
     fn new_from_inner<T>(rc: Rc<T>) -> RcK {
-        RcK { inner: ManuallyDrop::new(unsafe { mem::transmute(rc) }) }
+        RcK { inner: ManuallyDrop::new(unsafe { mem::transmute::<Rc<T>, UntypedRc>(rc) }) }
     }
 
     #[inline(always)]

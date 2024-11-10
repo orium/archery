@@ -12,29 +12,14 @@ repository = "https://github.com/orium/archery"
 documentation = "https://docs.rs/archery"
 readme = "README.md"
 
-keywords = [
-    "rc",
-    "arc",
-    "reference-counting",
-    "no_std"
-]
+keywords = ["rc", "arc", "reference-counting", "no_std"]
 
-categories = [
-    "concurrency",
-    "memory-management",
-    "rust-patterns",
-]
+categories = ["concurrency", "memory-management", "rust-patterns"]
 
 license = "MPL-2.0"
 
 # What to include when packaging.
-include = [
-    "/src/**/*.rs",
-    "/Cargo.toml",
-    "/LICENSE.md",
-    "/README.md",
-    "/release-notes.md",
-]
+include = ["/src/**/*.rs", "/Cargo.toml", "/LICENSE.md", "/README.md", "/release-notes.md"]
 
 [badges]
 codecov = { repository = "orium/archery", branch = "main", service = "github" }
@@ -56,8 +41,8 @@ serde = ["dep:serde"]
 
 [lints.clippy]
 all = { level = "warn", priority = -2 }
-pedantic = { level = "warn", priority = -2 }
 correctness = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -2 }
 
 explicit-deref-methods = "allow"
 if-not-else = "allow"

@@ -8,7 +8,7 @@
 use std::ops::Deref;
 use std::rc::Rc;
 
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 
 fn std_rc_deref(c: &mut Criterion) {

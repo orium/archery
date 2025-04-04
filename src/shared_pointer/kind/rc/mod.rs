@@ -34,32 +34,37 @@ impl RcK {
 
     #[inline(always)]
     unsafe fn take_inner<T>(self) -> Rc<T> {
-        let rc: UntypedRc = ManuallyDrop::into_inner(self.inner);
+        unsafe {
+            let rc: UntypedRc = ManuallyDrop::into_inner(self.inner);
 
-        mem::transmute(rc)
+            mem::transmute(rc)
+        }
     }
 
     #[inline(always)]
     unsafe fn as_inner_ref<T>(&self) -> &Rc<T> {
-        let rc_t: *const Rc<T> =
-            (self.inner.deref() as *const UntypedRc).cast::<alloc::rc::Rc<T>>();
+        unsafe {
+            let rc_t: *const Rc<T> = ptr::from_ref::<UntypedRc>(self.inner.deref()).cast::<Rc<T>>();
 
-        // Static check to make sure we are not messing up the sizes.
-        // This could happen if we allowed for `T` to be unsized, because it would need to be
-        // represented as a wide pointer inside `Rc`.
-        // TODO Use static_assertion when https://github.com/nvzqz/static-assertions-rs/issues/21
-        //      gets fixed
-        let _ = mem::transmute::<UntypedRc, Rc<T>>;
+            // Static check to make sure we are not messing up the sizes.
+            // This could happen if we allowed for `T` to be unsized, because it would need to be
+            // represented as a wide pointer inside `Rc`.
+            // TODO Use static_assertion when https://github.com/nvzqz/static-assertions-rs/issues/21
+            //      gets fixed
+            let _ = mem::transmute::<UntypedRc, Rc<T>>;
 
-        &*rc_t
+            &*rc_t
+        }
     }
 
     #[inline(always)]
     unsafe fn as_inner_mut<T>(&mut self) -> &mut Rc<T> {
-        let rc_t: *mut Rc<T> =
-            (self.inner.deref_mut() as *mut UntypedRc).cast::<alloc::rc::Rc<T>>();
+        unsafe {
+            let rc_t: *mut Rc<T> =
+                ptr::from_mut::<UntypedRc>(self.inner.deref_mut()).cast::<Rc<T>>();
 
-        &mut *rc_t
+            &mut *rc_t
+        }
     }
 }
 
@@ -76,42 +81,44 @@ unsafe impl SharedPointerKind for RcK {
 
     #[inline(always)]
     unsafe fn as_ptr<T>(&self) -> *const T {
-        Rc::as_ptr(self.as_inner_ref())
+        unsafe { Rc::as_ptr(self.as_inner_ref()) }
     }
 
     #[inline(always)]
     unsafe fn deref<T>(&self) -> &T {
-        self.as_inner_ref::<T>().as_ref()
+        unsafe { self.as_inner_ref::<T>().as_ref() }
     }
 
     #[inline(always)]
     unsafe fn try_unwrap<T>(self) -> Result<T, RcK> {
-        Rc::try_unwrap(self.take_inner()).map_err(RcK::new_from_inner)
+        unsafe { Rc::try_unwrap(self.take_inner()).map_err(RcK::new_from_inner) }
     }
 
     #[inline(always)]
     unsafe fn get_mut<T>(&mut self) -> Option<&mut T> {
-        Rc::get_mut(self.as_inner_mut())
+        unsafe { Rc::get_mut(self.as_inner_mut()) }
     }
 
     #[inline(always)]
     unsafe fn make_mut<T: Clone>(&mut self) -> &mut T {
-        Rc::make_mut(self.as_inner_mut())
+        unsafe { Rc::make_mut(self.as_inner_mut()) }
     }
 
     #[inline(always)]
     unsafe fn strong_count<T>(&self) -> usize {
-        Rc::strong_count(self.as_inner_ref::<T>())
+        unsafe { Rc::strong_count(self.as_inner_ref::<T>()) }
     }
 
     #[inline(always)]
     unsafe fn clone<T>(&self) -> RcK {
-        RcK { inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())) }
+        unsafe { RcK { inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())) } }
     }
 
     #[inline(always)]
     unsafe fn drop<T>(&mut self) {
-        ptr::drop_in_place::<Rc<T>>(self.as_inner_mut());
+        unsafe {
+            ptr::drop_in_place::<Rc<T>>(self.as_inner_mut());
+        }
     }
 }
 

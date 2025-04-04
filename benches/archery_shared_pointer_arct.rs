@@ -8,7 +8,7 @@
 use archery::*;
 use std::ops::Deref;
 
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 
 fn archery_shared_pointer_arct_deref(c: &mut Criterion) {

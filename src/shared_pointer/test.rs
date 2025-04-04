@@ -327,7 +327,7 @@ fn test_debug() {
 fn test_fmt_pointer() {
     let ptr: SharedPointer<_, RcK> = SharedPointer::new(314);
 
-    assert_eq!(format!("{ptr:p}"), format!("{:p}", ptr.deref() as *const i32));
+    assert_eq!(format!("{ptr:p}"), format!("{:p}", ptr::from_ref::<i32>(ptr.deref())));
 }
 
 #[test]

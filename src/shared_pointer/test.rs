@@ -340,10 +340,10 @@ fn test_display() {
 #[cfg(feature = "serde")]
 #[test]
 fn test_serde() {
-    use bincode::{deserialize, serialize};
     let ptr: SharedPointer<_, RcK> = SharedPointer::new("hello");
-    let encoded = serialize(&ptr).unwrap();
-    let decoded: SharedPointer<_, RcK> = deserialize(&encoded).unwrap();
+
+    let encoded = serde_json::to_string(&ptr).unwrap();
+    let decoded: SharedPointer<_, RcK> = serde_json::from_str(&encoded).unwrap();
 
     pretty_assertions::assert_eq!(ptr, decoded);
 }

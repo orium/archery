@@ -16,7 +16,7 @@ keywords = ["rc", "arc", "reference-counting", "no_std"]
 
 categories = ["concurrency", "memory-management", "rust-patterns"]
 
-license = "MPL-2.0"
+license = "MIT"
 
 # What to include when packaging.
 include = ["/src/**/*.rs", "/Cargo.toml", "/LICENSE.md", "/README.md", "/release-notes.md"]

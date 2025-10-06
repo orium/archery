@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.2
+
+* Relicensed project under the MIT license.
+
 ## 1.2.1
 
 * No longer depend on `static_assertions`.

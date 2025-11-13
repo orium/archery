@@ -42,7 +42,7 @@ archery = "<version>"
 
 `archery` defines a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html)
 that receives the [kind of pointer](https://docs.rs/archery/latest/archery/shared_pointer/kind/trait.SharedPointerKind.html)
-as a type parameter.  This gives you a convenient and ergonomic way to abstract the pointer
+as a type parameter. This gives you a convenient and ergonomic way to abstract the pointer
 type away.
 
 ### Example
@@ -90,8 +90,8 @@ kind in [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/
 
 ### Serialization
 
-We support serialization through [serde](https://crates.io/crates/serde).  To use it
-enable the `serde` feature.  To do so change the archery dependency in your `Cargo.toml` to
+We support serialization through [serde](https://crates.io/crates/serde). To use it
+enable the `serde` feature. To do so change the archery dependency in your `Cargo.toml` to
 
 ```toml
 [dependencies]
@@ -100,13 +100,13 @@ archery = { version = "<version>", features = ["serde"] }
 ## Limitations
 
 Currently it is not possible to have unsized types inside a
-[`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html).  As a workaround you can put the
+[`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html). As a workaround you can put the
 unsized type inside a [`Box`](https://doc.rust-lang.org/stable/alloc/boxed/struct.Box.html).
 
 ## Alternative approaches
 
 An alternative to the approach taken by `archery` is to use traits with associated types to encode
-type-level functions.  This has been suggested
+type-level functions. This has been suggested
 [multiple](https://github.com/orium/rpds/issues/7#issuecomment-362635901)
 [times](https://joshlf.com/post/2018/10/18/rust-higher-kinded-types-already/#comment-4160863400),
 but offers ugly ergonomics (see

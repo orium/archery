@@ -1,10 +1,7 @@
-#![cfg_attr(feature = "fatal-warnings", deny(warnings))]
-
-use std::ops::Deref;
-use std::sync::Arc;
-
 use criterion::{Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
+use std::ops::Deref;
+use std::sync::Arc;
 
 fn std_arc_deref(c: &mut Criterion) {
     let limit = 200_000;

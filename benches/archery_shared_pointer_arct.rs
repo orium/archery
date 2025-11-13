@@ -1,10 +1,7 @@
-#![cfg_attr(feature = "fatal-warnings", deny(warnings))]
-
 use archery::*;
-use std::ops::Deref;
-
 use criterion::{Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
+use std::ops::Deref;
 
 fn archery_shared_pointer_arct_deref(c: &mut Criterion) {
     let limit = 200_000;

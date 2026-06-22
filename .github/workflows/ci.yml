@@ -28,10 +28,19 @@ jobs:
           toolchain: ${{ env.MIRI_TOOLCHAIN }}
           components: miri, rust-src
 
-      - name: Install rust
+      - name: Install rust (stable)
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, rust-src
+
+      # cargo-rdme needs nightly.
+      - name: Install rust (nightly)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly
+
+      - name: Use stable rust for the build
+        run: rustup default stable
 
       - name: Install cargo plugins
         run: |

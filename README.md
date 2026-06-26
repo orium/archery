@@ -1,9 +1,9 @@
-[![Build Status](https://github.com/orium/archery/workflows/CI/badge.svg)](https://github.com/orium/archery/actions?query=workflow%3ACI)
+[![Build Status](https://github.com/orium/archery/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/orium/archery/actions/workflows/ci.yml?query=branch%3Amain)
 [![Code Coverage](https://codecov.io/gh/orium/archery/branch/main/graph/badge.svg)](https://codecov.io/gh/orium/archery)
 [![Dependency status](https://deps.rs/repo/github/orium/archery/status.svg)](https://deps.rs/repo/github/orium/archery)
 [![crates.io](https://img.shields.io/crates/v/archery.svg)](https://crates.io/crates/archery)
 [![Downloads](https://img.shields.io/crates/d/archery.svg)](https://crates.io/crates/archery)
-[![Github stars](https://img.shields.io/github/stars/orium/archery.svg?logo=github)](https://github.com/orium/archery/stargazers)
+[![Github stars](https://img.shields.io/github/stars/orium/archery?style=flat&logo=github)](https://github.com/orium/archery/stargazers)
 [![Documentation](https://docs.rs/archery/badge.svg)](https://docs.rs/archery/)
 [![License](https://img.shields.io/crates/l/archery.svg)](./LICENSE.md)
 <img src="https://raw.githubusercontent.com/orium/archery/main/images/archery.svg?sanitize=true" width="240" align="right">

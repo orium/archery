@@ -221,6 +221,7 @@ fn test_hash_pointer_kind_consistent() {
 }
 
 #[allow(clippy::nonminimal_bool)]
+#[allow(clippy::manual_assert_eq)]
 #[test]
 fn test_eq() {
     let ptr_22: SharedPointer<_, RcK> = SharedPointer::new(22);

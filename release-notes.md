@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.2.3
+
+* Fix UB in shared pointer kinds relying on `Rc`/`Arc` layout (#33).
+* Update dependencies.
+
 ## 1.2.2
 
 * Relicensed project under the MIT license.

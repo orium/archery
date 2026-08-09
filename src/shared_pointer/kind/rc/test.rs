@@ -186,3 +186,40 @@ fn test_debug() {
         ptr.drop::<i32>();
     }
 }
+
+#[test]
+fn test_make_mut_panic_safety() {
+    use std::panic::AssertUnwindSafe;
+    use std::panic::catch_unwind;
+
+    struct PanicOnClone(#[allow(dead_code)] u32);
+
+    impl Clone for PanicOnClone {
+        fn clone(&self) -> Self {
+            panic!("intentional panic in T::clone");
+        }
+    }
+
+    let mut ptr = PointerKind::new::<PanicOnClone>(PanicOnClone(42));
+
+    unsafe {
+        let mut ptr_clone = ptr.clone::<PanicOnClone>();
+
+        assert_eq!(ptr.strong_count::<PanicOnClone>(), 2);
+
+        // Trigger `make_mut` on a shared handle so it must clone via `T::clone` (which panics).
+        let result = catch_unwind(AssertUnwindSafe(|| {
+            ptr_clone.make_mut::<PanicOnClone>();
+        }));
+
+        assert!(result.is_err(), "make_mut should have unwound");
+
+        // A panic in `T::clone` must not desync the strong count: both handles must still own
+        // their strong reference.
+        assert_eq!(ptr.strong_count::<PanicOnClone>(), 2);
+        assert_eq!(ptr_clone.strong_count::<PanicOnClone>(), 2);
+
+        ptr.drop::<PanicOnClone>();
+        ptr_clone.drop::<PanicOnClone>();
+    }
+}

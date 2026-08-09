@@ -1,65 +1,59 @@
 use crate::shared_pointer::kind::SharedPointerKind;
+use crate::shared_pointer::kind::erased_ptr::ErasedPtr;
 use alloc::boxed::Box;
 use alloc::rc::Rc;
 use core::fmt;
 use core::fmt::Debug;
 use core::fmt::Formatter;
-use core::mem;
 use core::mem::ManuallyDrop;
-use core::ops::Deref;
-use core::ops::DerefMut;
-use core::ptr;
-
-type UntypedRc = Rc<()>;
 
 /// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
 /// [`Rc`] pointers.
 pub struct RcK {
-    /// We use [`ManuallyDrop`] here, so that we can drop it explicitly as [`Rc<T>`](alloc::rc::Rc).
-    /// Not sure if it can be dropped as [`UntypedRc`], but it seems to be playing with fire (even
-    /// more than we already are).
-    inner: ManuallyDrop<UntypedRc>,
+    /// A pointer previously obtained from [`Rc::into_raw()`] for the `T` this instance was
+    /// constructed with, and round-tripped through [`Rc::from_raw()`] on every operation. This
+    /// avoids relying on the layout of `Rc<T>` (which is not part of Rust's stable ABI) to
+    /// perform the type erasure.
+    ///
+    /// The referenced [`Rc`] allocation is kept alive by this pointer (which owns one strong
+    /// reference) until [`SharedPointerKind::drop()`] is called.
+    inner: ErasedPtr,
 }
 
 impl RcK {
     #[inline(always)]
     fn new_from_inner<T>(rc: Rc<T>) -> RcK {
-        RcK { inner: ManuallyDrop::new(unsafe { mem::transmute::<Rc<T>, UntypedRc>(rc) }) }
+        RcK { inner: ErasedPtr::new(Rc::into_raw(rc)) }
     }
 
+    /// Reconstructs a non-owning view of the inner [`Rc<T>`].
+    ///
+    /// The returned [`ManuallyDrop`] must not be unwrapped: dropping the inner [`Rc`] would
+    /// decrement a refcount that this instance still logically owns.
+    ///
+    /// # Safety
+    ///
+    /// `Self` must have been constructed with the same `T`.
+    #[inline(always)]
+    unsafe fn as_inner<T>(&self) -> ManuallyDrop<Rc<T>> {
+        // SAFETY: By the type-parameter invariant, `self.inner` was produced by
+        // `Rc::into_raw::<T>` and points to a live `Rc<T>` allocation. Wrapping the
+        // reconstructed `Rc` in `ManuallyDrop` prevents it from decrementing the strong count
+        // when this local goes out of scope.
+        ManuallyDrop::new(unsafe { Rc::from_raw(self.inner.cast::<T>()) })
+    }
+
+    /// Takes ownership of the inner [`Rc<T>`], consuming `self`.
+    ///
+    /// # Safety
+    ///
+    /// `Self` must have been constructed with the same `T`.
     #[inline(always)]
     unsafe fn take_inner<T>(self) -> Rc<T> {
-        unsafe {
-            let rc: UntypedRc = ManuallyDrop::into_inner(self.inner);
-
-            mem::transmute(rc)
-        }
-    }
-
-    #[inline(always)]
-    unsafe fn as_inner_ref<T>(&self) -> &Rc<T> {
-        unsafe {
-            let rc_t: *const Rc<T> = ptr::from_ref::<UntypedRc>(self.inner.deref()).cast::<Rc<T>>();
-
-            // Static check to make sure we are not messing up the sizes.
-            // This could happen if we allowed for `T` to be unsized, because it would need to be
-            // represented as a wide pointer inside `Rc`.
-            // TODO Use static_assertion when https://github.com/nvzqz/static-assertions-rs/issues/21
-            //      gets fixed
-            let _ = mem::transmute::<UntypedRc, Rc<T>>;
-
-            &*rc_t
-        }
-    }
-
-    #[inline(always)]
-    unsafe fn as_inner_mut<T>(&mut self) -> &mut Rc<T> {
-        unsafe {
-            let rc_t: *mut Rc<T> =
-                ptr::from_mut::<UntypedRc>(self.inner.deref_mut()).cast::<Rc<T>>();
-
-            &mut *rc_t
-        }
+        // SAFETY: By the type-parameter invariant, `self.inner` was produced by
+        // `Rc::into_raw::<T>`. `self` is consumed by value and `RcK` has no `Drop` impl, so the
+        // ownership of the strong reference transfers cleanly to the returned `Rc<T>`.
+        unsafe { Rc::from_raw(self.inner.cast::<T>()) }
     }
 }
 
@@ -76,44 +70,84 @@ unsafe impl SharedPointerKind for RcK {
 
     #[inline(always)]
     unsafe fn as_ptr<T>(&self) -> *const T {
-        unsafe { Rc::as_ptr(self.as_inner_ref()) }
+        // SAFETY: The type-parameter invariant is forwarded to `ErasedPtr::cast`.
+        unsafe { self.inner.cast::<T>() }
     }
 
     #[inline(always)]
     unsafe fn deref<T>(&self) -> &T {
-        unsafe { self.as_inner_ref::<T>().as_ref() }
+        // SAFETY: By the type-parameter invariant, `self.inner` was produced by
+        // `Rc::into_raw::<T>`, so it points to a valid `T` inside an allocation that is kept
+        // alive by `self`. The returned reference is tied to the lifetime of `&self`.
+        unsafe { &*self.inner.cast::<T>() }
     }
 
     #[inline(always)]
     unsafe fn try_unwrap<T>(self) -> Result<T, RcK> {
-        unsafe { Rc::try_unwrap(self.take_inner()).map_err(RcK::new_from_inner) }
+        // SAFETY: The type-parameter invariant is forwarded to `take_inner`.
+        let rc: Rc<T> = unsafe { self.take_inner::<T>() };
+
+        Rc::try_unwrap(rc).map_err(RcK::new_from_inner)
     }
 
     #[inline(always)]
     unsafe fn get_mut<T>(&mut self) -> Option<&mut T> {
-        unsafe { Rc::get_mut(self.as_inner_mut()) }
+        // SAFETY: The type-parameter invariant is forwarded to `map_owned`; `Rc::from_raw` and
+        // `Rc::into_raw` are an inverse pair for `Rc<T>`.
+        let ret: Option<*mut T> = unsafe {
+            self.inner.map_owned::<T, Rc<T>, _>(Rc::from_raw, Rc::as_ptr, |rc| {
+                Rc::get_mut(rc).map(core::ptr::from_mut)
+            })
+        };
+
+        // SAFETY: If `Rc::get_mut` returned `Some`, no other strong or weak reference existed
+        // at the time of the call, so we have exclusive access to the `T`. The allocation is
+        // kept alive for at least as long as `self` because `self.inner` still owns a strong
+        // reference. The returned reference's lifetime is bound to `&mut self`, so no other
+        // access through `self` can occur while it is live.
+        ret.map(|p| unsafe { &mut *p })
     }
 
     #[inline(always)]
     unsafe fn make_mut<T: Clone>(&mut self) -> &mut T {
-        unsafe { Rc::make_mut(self.as_inner_mut()) }
+        // SAFETY: The type-parameter invariant is forwarded to `map_owned`; `Rc::from_raw` and
+        // `Rc::into_raw` are an inverse pair for `Rc<T>`.
+        let ret: *mut T = unsafe {
+            self.inner.map_owned::<T, Rc<T>, _>(Rc::from_raw, Rc::as_ptr, |rc| {
+                core::ptr::from_mut(Rc::make_mut(rc))
+            })
+        };
+
+        // SAFETY: `Rc::make_mut` guarantees exclusive access to the (possibly freshly cloned)
+        // `T`. The allocation is kept alive by `self.inner`. The returned reference's lifetime
+        // is bound to `&mut self`, so no other access through `self` can occur while it is
+        // live.
+        unsafe { &mut *ret }
     }
 
     #[inline(always)]
     unsafe fn strong_count<T>(&self) -> usize {
-        unsafe { Rc::strong_count(self.as_inner_ref::<T>()) }
+        // SAFETY: The type-parameter invariant is forwarded to `as_inner`.
+        let rc: ManuallyDrop<Rc<T>> = unsafe { self.as_inner::<T>() };
+
+        Rc::strong_count(&*rc)
     }
 
     #[inline(always)]
     unsafe fn clone<T>(&self) -> RcK {
-        unsafe { RcK { inner: ManuallyDrop::new(Rc::clone(self.as_inner_ref())) } }
+        // SAFETY: The type-parameter invariant is forwarded to `as_inner`.
+        let rc: ManuallyDrop<Rc<T>> = unsafe { self.as_inner::<T>() };
+
+        RcK::new_from_inner(Rc::clone(&*rc))
     }
 
     #[inline(always)]
     unsafe fn drop<T>(&mut self) {
-        unsafe {
-            ptr::drop_in_place::<Rc<T>>(self.as_inner_mut());
-        }
+        // SAFETY: By the type-parameter invariant, `self.inner` was produced by
+        // `Rc::into_raw::<T>`. Reconstructing the `Rc<T>` and letting it drop decrements the
+        // strong count matching the initial `Rc::into_raw`. The caller guarantees this is the
+        // last use of `self`.
+        drop(unsafe { Rc::from_raw(self.inner.cast::<T>()) });
     }
 }
 

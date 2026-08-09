@@ -25,8 +25,8 @@ include = ["/src/**/*.rs", "/Cargo.toml", "/LICENSE.md", "/README.md", "/release
 codecov = { repository = "orium/archery", branch = "main", service = "github" }
 
 [dependencies]
-serde = { version = "1.0.228", optional = true, default-features = false }
-triomphe = { version = "0.1.15", optional = true, default-features = false }
+serde = { version = "1.0.229", optional = true, default-features = false }
+triomphe = { version = "0.1.16", optional = true, default-features = false }
 
 [dev-dependencies]
 criterion = { version = "0.8.2", features = ["html_reports"] }

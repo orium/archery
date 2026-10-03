@@ -40,10 +40,9 @@ archery = "<version>"
 
 ## Using `archery`
 
-`archery` defines a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html)
-that receives the [kind of pointer](https://docs.rs/archery/latest/archery/shared_pointer/kind/trait.SharedPointerKind.html)
-as a type parameter. This gives you a convenient and ergonomic way to abstract the pointer
-type away.
+`archery` defines a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html) that receives the [kind of pointer](https://docs.rs/archery/latest/archery/shared_pointer/kind/trait.SharedPointerKind.html) as
+a type parameter. This gives you a convenient and ergonomic way to abstract the pointer type
+away.
 
 ### Example
 
@@ -99,9 +98,8 @@ archery = { version = "<version>", features = ["serde"] }
 ```
 ## Limitations
 
-Currently it is not possible to have unsized types inside a
-[`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html). As a workaround you can put the
-unsized type inside a [`Box`](https://doc.rust-lang.org/stable/alloc/boxed/struct.Box.html).
+Currently it is not possible to have unsized types inside a [`SharedPointer`](https://docs.rs/archery/latest/archery/shared_pointer/struct.SharedPointer.html). As a workaround
+you can put the unsized type inside a [`Box`](https://doc.rust-lang.org/stable/alloc/boxed/struct.Box.html).
 
 ## Alternative approaches
 

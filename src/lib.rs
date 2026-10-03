@@ -28,15 +28,14 @@
 //!
 //! # Using `archery`
 //!
-//! `archery` defines a [`SharedPointer`](crate::shared_pointer::SharedPointer)
-//! that receives the [kind of pointer](crate::shared_pointer::kind::SharedPointerKind)
-//! as a type parameter. This gives you a convenient and ergonomic way to abstract the pointer
-//! type away.
+//! `archery` defines a [`SharedPointer`] that receives the [kind of pointer](SharedPointerKind) as
+//! a type parameter. This gives you a convenient and ergonomic way to abstract the pointer type
+//! away.
 //!
 //! ## Example
 //!
 //! Declare a data structure with the pointer kind as a type parameter bounded by
-//! [`SharedPointerKind`](crate::shared_pointer::kind::SharedPointerKind):
+//! [`SharedPointerKind`]:
 //!
 //! ```rust
 //! use archery::*;
@@ -84,13 +83,13 @@
 //! ## `triomphe::Arc`
 //!
 //! You can also use [`triomphe::Arc`](https://docs.rs/triomphe/latest/triomphe/struct.Arc.html)
-//! as the backing implementation of a [`SharedPointer`](crate::shared_pointer::SharedPointer).
+//! as the backing implementation of a [`SharedPointer`].
 //! This is generally faster than [`std::sync::Arc`](::alloc::sync::Arc).
 //! Read [`triomphe`’s crate documentation](https://docs.rs/triomphe/latest/triomphe/) to learn more
 //! about it.
 //!
 //! To use it you need to enable the `triomphe` feature in `archery`. Use `ArcTK` as the pointer
-//! kind in [`SharedPointer`](crate::shared_pointer::SharedPointer).
+//! kind in [`SharedPointer`].
 //!
 //! ## Serialization
 //!
@@ -103,9 +102,8 @@
 //! ```
 //! # Limitations
 //!
-//! Currently it is not possible to have unsized types inside a
-//! [`SharedPointer`](crate::shared_pointer::SharedPointer). As a workaround you can put the
-//! unsized type inside a [`Box`](::alloc::boxed::Box).
+//! Currently it is not possible to have unsized types inside a [`SharedPointer`]. As a workaround
+//! you can put the unsized type inside a [`Box`](::alloc::boxed::Box).
 //!
 //! # Alternative approaches
 //!

@@ -8,7 +8,7 @@ use core::mem::ManuallyDrop;
 use triomphe::Arc;
 
 /// [Type constructors](https://en.wikipedia.org/wiki/Type_constructor) for
-/// [`triomphe::Arc`](triomphe::Arc) pointers.
+/// [`triomphe::Arc`] pointers.
 pub struct ArcTK {
     /// A pointer previously obtained from [`Arc::into_raw()`] for the `T` this instance was
     /// constructed with, and round-tripped through [`Arc::from_raw()`] on every operation.

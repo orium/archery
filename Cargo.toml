@@ -43,23 +43,23 @@ all = { level = "warn", priority = -2 }
 correctness = { level = "deny", priority = -1 }
 pedantic = { level = "warn", priority = -2 }
 
-explicit-deref-methods = "allow"
-if-not-else = "allow"
-inline-always = "allow"
-match-bool = "allow"
-missing-errors-doc = "allow"
-missing-safety-doc = "allow"
-module-name-repetitions = "allow"
-partialeq-ne-impl = "allow"
-similar-names = "allow"
-single-match-else = "allow"
-use-self = "allow"
-wildcard-imports = "allow"
+explicit_deref_methods = "allow"
+if_not_else = "allow"
+inline_always = "allow"
+match_bool = "allow"
+missing_errors_doc = "allow"
+missing_safety_doc = "allow"
+module_name_repetitions = "allow"
+partialeq_ne_impl = "allow"
+similar_names = "allow"
+single_match_else = "allow"
+use_self = "allow"
+wildcard_imports = "allow"
 
 [lints.rustdoc]
 # TODO This is only needed because `cargo-rdme` requires a path like `crate::⋯`. Once that limitation is lifted we
 #      can remove this.
-redundant-explicit-links = "allow"
+redundant_explicit_links = "allow"
 
 [lib]
 # Disable libtest to make sure criterion can parse the command line flags.

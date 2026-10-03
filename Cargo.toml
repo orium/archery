@@ -49,11 +49,9 @@ inline_always = "allow"
 match_bool = "allow"
 missing_errors_doc = "allow"
 missing_safety_doc = "allow"
-module_name_repetitions = "allow"
 partialeq_ne_impl = "allow"
 similar_names = "allow"
 single_match_else = "allow"
-use_self = "allow"
 wildcard_imports = "allow"
 
 [lib]
